@@ -70,8 +70,15 @@ public class Logic_Controller : MonoBehaviour {
 
 	void Initialize_World()
 	{
+		//Create the Unit Faction Handler
+		man_BlackBoards= new Manager_BlackBoard();
+		//Spawn 10 "Player Faction" units
+		for(int i=0;i<10;i++)
+		{
+			man_BlackBoards.AddActor(new Actor(Vector3.zero),"player");
+		}
 
-
+		EventLog.Log_Message("World successfully Initialized");
 	}
 
 
@@ -79,7 +86,7 @@ public class Logic_Controller : MonoBehaviour {
 	//This is the Function that does all the Heavy Lifting
 	void Update_Routine(float timeElapsed)
 	{
-
+		man_BlackBoards.Update_Boards(timeElapsed);
 	}
 
 	void AutoSave_Routine()

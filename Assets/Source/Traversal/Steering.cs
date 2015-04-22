@@ -11,14 +11,13 @@ public class Steering {
 	protected float maxSpeed=10;
 	protected float maxForce=0.5f;
 
+		//The direction we are facing, a normalized Vector
+	protected Vector3 facing;
+
 
 	//Persistent Values only needed for Steering Dynamics
 	Vector3 velocity;
 	Vector3 acceleration;
-
-	//The direction we are facing, a normalized Vector
-	
-	Vector3 facing;
 	//Our Current Rotation to append new Rotations onto
 	float rotation;
 	////////////////////

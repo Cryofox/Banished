@@ -37,6 +37,8 @@ public class Manager_BlackBoard
 		BlackBoard bboard = new BlackBoard(factionName);
 		hasht_Boards.Add(factionName, bboard);
 		list_Boards.Add(bboard);
+
+		EventLog.Log_Message("Faction:"+factionName+" has been added to Database");
 	}
 
 	public void Remove_Faction(string factionName)

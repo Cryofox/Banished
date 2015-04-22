@@ -18,6 +18,7 @@ public class BlackBoard {
 		this.units = new List<Actor>();
 	}
 
+	//Adds the Character to the BlackBoard and Spawns the Unit in the Game World
 	public void AddActor(Actor unit)
 	{
 		//No Duplicate searching (Slow Down)
@@ -30,7 +31,7 @@ public class BlackBoard {
 
 
 
-
+	//Update all Actors ruled by this Board
 	public void UpdateActors(float timeElapsed)
 	{
 		for(int i=0;i< units.Count;i++)
