@@ -12,19 +12,20 @@ public class Sector
 
 	public void AddUnit(Actor unit)
 	{
-		for(int i=0;i<dynamicEntities.Count;i++)
-		{
-			if(dynamicEntities[i]==unit)
-			{
-				return;
-			}
-		}
+		//Optimized, no duplicates are entered :)
+		// for(int i=0;i<dynamicEntities.Count;i++)
+		// {
+		// 	if(dynamicEntities[i]==unit)
+		// 	{
+		// 		EventLog.Log_Message("Duplicate Found");
+		// 		return;
+		// 	}
+		// }
 		dynamicEntities.Add(unit);
 	}
 
 	public void RemoveUnit(Actor unit)
 	{
-		dynamicEntities.Add(unit);
 		for(int i=0;i<dynamicEntities.Count;i++)
 		{
 			if(dynamicEntities[i]==unit)

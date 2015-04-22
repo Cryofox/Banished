@@ -70,15 +70,16 @@ public class Manager_Collision
 		int xSector = (int)(point.x)/ segmentLength;
 		int ySector = (int)(point.z)/ segmentLength;
 
-		if(xSector<0 || xSector> dimension)
-		{xSector=0;}
-		if(ySector<0 || ySector> dimension)
-		{ySector=0;}
+		//if(xSector<0 || xSector> dimension)
+		//{xSector=0;}
+		//if(ySector<0 || ySector> dimension)
+		//{ySector=0;}
 
 		if(unit.lastSector.x!= xSector || unit.lastSector.z != ySector)
 		{
 			//Remove Unit from Last Sector
 			sectors[ (int)unit.lastSector.x][(int)unit.lastSector.z].RemoveUnit(unit);
+			unit.lastSector= new Vector3(xSector,0,ySector);
 			sectors[xSector][ySector].AddUnit(unit);
 		}
 	}

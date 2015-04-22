@@ -17,7 +17,7 @@ public class Actor : Steering
 		get
 		{
 			//New Reference created each call
-			Vector3 vector = new Vector3(position.x, position.y,position.z);
+			Vector3 vector = new Vector3(position.x, 0,position.z);
 			return vector;
 		}
 	}
