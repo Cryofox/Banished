@@ -17,6 +17,8 @@ public class Logic_Controller : MonoBehaviour {
 
 	//Managers for key game Logic
 	private Manager_BlackBoard man_BlackBoards;
+	public Manager_Collision man_Collisions;
+
 	// FlowField Manager
 	// Collision Manager
 
@@ -26,8 +28,7 @@ public class Logic_Controller : MonoBehaviour {
 
 	//Creates the number of BlackBoard Classes that need to be managed (1 Per Faction)
 	int num_Factions=10;
-	//Sets up the Square World dimensions to be used by the games Navigation and
-	int world_SideLength; 
+
 
 	//Auto-Save Feature
 	float targetTime_AutoSave;
@@ -38,7 +39,6 @@ public class Logic_Controller : MonoBehaviour {
 	{
 		//Initialization Code
 		Initialize_World();
-
 	}
 	
 	// Update is called once per frame
@@ -74,15 +74,19 @@ public class Logic_Controller : MonoBehaviour {
 	//5k = Decent
 
 	//Game starts you off with 10 people anyways
-	int debug_Test=10;
+	int debug_Test=100;
 	void Initialize_World()
 	{
+		//Create the Collision Handler
+		//World dimensions currently Stored inside here
+		man_Collisions= new Manager_Collision();
+
 		//Create the Unit Faction Handler
-		man_BlackBoards= new Manager_BlackBoard();
+		man_BlackBoards= new Manager_BlackBoard(man_Collisions);
 		//Spawn 10 "Player Faction" units
 		for(int i=0;i<debug_Test;i++)
 		{
-			man_BlackBoards.AddActor(new Actor(Vector3.zero),"player");
+			man_BlackBoards.AddActor(new Actor(new Vector3(500,0,500)),"player");
 		}
 
 		EventLog.Log_Message("World successfully Initialized");

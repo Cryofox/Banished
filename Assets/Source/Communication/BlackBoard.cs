@@ -8,6 +8,7 @@ public class BlackBoard {
 
 	//List of Buildings
 
+
 	//List of Units
 	List<Actor> units;
 

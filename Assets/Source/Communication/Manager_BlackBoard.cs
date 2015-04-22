@@ -13,8 +13,13 @@ public class Manager_BlackBoard
 	Hashtable hasht_Boards;
 	//Used for Iteration when needed
 	List<BlackBoard> list_Boards;
-	public Manager_BlackBoard()
+	
+	Manager_Collision man_Collision;
+
+	public Manager_BlackBoard(Manager_Collision manCol)
 	{
+		this.man_Collision= manCol;
+
 		hasht_Boards = new Hashtable();
 		list_Boards = new List<BlackBoard>();
 	}
@@ -24,7 +29,10 @@ public class Manager_BlackBoard
 	{
 		//Here we add the Actor to the specified Faction
 		Add_Faction(factionName); //Ensure faction exists
+
 		((BlackBoard)hasht_Boards[factionName]).AddActor(unit); //Add Actor to Board
+		//Insert our new Unit inside the Collision Field
+		
 	}
 
 	//Create the BlackBoard to manage this Factions Content
