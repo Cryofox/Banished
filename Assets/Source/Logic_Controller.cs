@@ -68,12 +68,19 @@ public class Logic_Controller : MonoBehaviour {
 		}
 	}
 
+	//1k Units per faction? :)
+	//10k = Lag
+
+	//5k = Decent
+
+	//Game starts you off with 10 people anyways
+	int debug_Test=10;
 	void Initialize_World()
 	{
 		//Create the Unit Faction Handler
 		man_BlackBoards= new Manager_BlackBoard();
 		//Spawn 10 "Player Faction" units
-		for(int i=0;i<10;i++)
+		for(int i=0;i<debug_Test;i++)
 		{
 			man_BlackBoards.AddActor(new Actor(Vector3.zero),"player");
 		}
