@@ -4,20 +4,25 @@ using System.Collections;
 public class Steering {
 
 	//Persistant Values
-	Vector3 position;
+
+	//These are the values we want the Actor to have access to
+	//as it might become useful
+	protected Vector3 position;
+	protected float maxSpeed=10;
+	protected float maxForce=0.5f;
+
+
+	//Persistent Values only needed for Steering Dynamics
 	Vector3 velocity;
 	Vector3 acceleration;
 
-
-	//Vector3 targetPosition;
-	float maxSpeed=10;
-	float maxForce=0.5f;
-	////////////////////
 	//The direction we are facing, a normalized Vector
+	
 	Vector3 facing;
-
 	//Our Current Rotation to append new Rotations onto
 	float rotation;
+	////////////////////
+
 
 	public Steering()
 	{
@@ -33,7 +38,7 @@ public class Steering {
 
 	// Update_Logic is called once per frame
 	//This calculates and corrects the movement based on proximity
-	void Update_Logic () 
+	protected void Update_Steering (float timeElapsed) 
 	{
 		//Every Frame
 		velocity+=acceleration;
@@ -57,18 +62,17 @@ public class Steering {
 
 
 		//Add the velocity to the Position
-		position+= (velocity * Time.deltaTime);
+		position+= (velocity *  timeElapsed);
 
 		//Zero out the 3rd dimension, only for Demo purposes
-		position= new Vector3(transform.position.x,0, transform.position.z);
+		position= new Vector3(position.x,0, position.z);
 
 
 		//Reset Acceleration
 		acceleration*=0;
 
 		//What do we want to do?
-		
-
+	
 		// Seek(); 
 		// Avoid();
 		// Avoid_T2();
@@ -83,7 +87,7 @@ public class Steering {
 		acceleration += force;
 	}
 
-	void Seek(Vector3 seekLocation)
+	protected void Seek(Vector3 seekLocation)
 	{
 		Vector3 desiredVector= (Vector3.Normalize( seekLocation -  position ))* maxSpeed;
 		Vector3 steer = ( desiredVector - velocity);
@@ -101,7 +105,7 @@ public class Steering {
 	}
 
 
-	void Avoid(Vector3 avoidLocation)
+	protected void Avoid(Vector3 avoidLocation)
 	{
 		Vector3 desiredVector= (Vector3.Normalize( position - avoidLocation ))* maxSpeed;
 		Vector3 steer = ( desiredVector - velocity);
@@ -118,7 +122,7 @@ public class Steering {
 		ApplyForce(steer);
 	}
 
-	void Arrive(Vector3 seekLocation) 
+	protected void Arrive(Vector3 seekLocation) 
 	{
 		Vector3 desiredVector= ( seekLocation- position);
 
@@ -150,4 +154,38 @@ public class Steering {
 
 		ApplyForce(steer);
 	}
+	protected void Wander() 
+	{
+		//For Demo only
+		//We Reposition our Target.
+
+		//Choose Distance from Face
+		float distance_Center = 7;
+		float wanderRadius = 5;
+
+		float randomNum = Random.Range(-20,20);
+
+		rotation+=randomNum;
+		//Calculate Position
+
+
+
+		float xVal = Mathf.Sin(  Mathf.PI/180 * rotation );
+		float yVal = Mathf.Cos(  Mathf.PI/180 * rotation );
+
+		// xVal *= 180/Mathf.PI;
+		xVal*=wanderRadius;
+		yVal*=wanderRadius;
+
+		//Need to Reposition infront of Unit
+		//Find Direction we are facing
+		Vector3 circleCenter = facing;
+		circleCenter *= distance_Center;
+		circleCenter+= position;
+
+		Vector3 targetLocation = new Vector3(circleCenter.x + xVal, 0, circleCenter.z+yVal);
+
+		Seek(targetLocation);
+	}
+
 }
