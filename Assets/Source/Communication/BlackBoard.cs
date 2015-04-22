@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class BlackBoard {
 
 	public string id_FactionName;
-
+	public Manager_Collision man_Collision;
 
 	//List of Buildings
 
@@ -24,13 +24,11 @@ public class BlackBoard {
 	{
 		//No Duplicate searching (Slow Down)
 		units.Add(unit);
+		unit.blackBoard= this; //Give the actor our reference for Sector Calls
 		unit.Spawn_Actor();
 	}
 
 	//Add Building
-
-
-
 
 	//Update all Actors ruled by this Board
 	public void UpdateActors(float timeElapsed)
@@ -41,5 +39,22 @@ public class BlackBoard {
 		}
 
 	}
+
+
+
+	//Callbacks from Actor to BlackBoard
+	public void UpdateSector(Actor unit)
+	{
+		//Call update sector
+		man_Collision.Update_Sector(unit);
+	}
+
+	//Callbacks from Actor to BlackBoard
+	public void CheckCollision(Actor unit)
+	{
+		//Call update sector
+		man_Collision.Collision_Check(unit);
+	}
+
 
 }

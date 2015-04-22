@@ -5,6 +5,7 @@ using System.Collections.Generic;
 //This class is used to Update Logic of All Units within the game
 public class Manager_BlackBoard
 {
+	Manager_Collision man_Collision;
 	//Makes more Sense using a HashTable
 	
 	//ADT for Managing Boards
@@ -14,7 +15,7 @@ public class Manager_BlackBoard
 	//Used for Iteration when needed
 	List<BlackBoard> list_Boards;
 	
-	Manager_Collision man_Collision;
+
 
 	public Manager_BlackBoard(Manager_Collision manCol)
 	{
@@ -32,7 +33,7 @@ public class Manager_BlackBoard
 
 		((BlackBoard)hasht_Boards[factionName]).AddActor(unit); //Add Actor to Board
 		//Insert our new Unit inside the Collision Field
-		
+		//man_Collision.Initial_Addition(unit);
 	}
 
 	//Create the BlackBoard to manage this Factions Content
@@ -43,6 +44,7 @@ public class Manager_BlackBoard
 			return;		
 
 		BlackBoard bboard = new BlackBoard(factionName);
+		bboard.man_Collision = man_Collision;
 		hasht_Boards.Add(factionName, bboard);
 		list_Boards.Add(bboard);
 

@@ -74,7 +74,7 @@ public class Logic_Controller : MonoBehaviour {
 	//5k = Decent
 
 	//Game starts you off with 10 people anyways
-	int debug_Test=100;
+	int debug_Test=1000;
 	void Initialize_World()
 	{
 		//Create the Collision Handler
@@ -98,6 +98,7 @@ public class Logic_Controller : MonoBehaviour {
 	void Update_Routine(float timeElapsed)
 	{
 		man_BlackBoards.Update_Boards(timeElapsed);
+		man_Collisions.Debug_DrawZones();
 	}
 
 	void AutoSave_Routine()

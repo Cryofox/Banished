@@ -4,6 +4,13 @@ using System.Collections;
 //core class, vampires, ghosts, people, elves etc all Inherit from Actor
 public class Actor : Steering
 {
+	//To Speed up Sector Updates
+	//Store the Last Sector we've been in
+	public Vector3 lastSector;
+
+	public BlackBoard blackBoard;
+
+
 
 	public Vector3 unitPosition
 	{
@@ -28,7 +35,8 @@ public class Actor : Steering
 
 
 	//Persistant Information
-	BoundingBox collisionBox;
+	public BoundingBox collisionBox;
+
 
 	public Actor(Vector3 startPosition)
 	{
@@ -36,6 +44,7 @@ public class Actor : Steering
 		// 1x1
 		this.collisionBox = new BoundingBox(1,1);		
 		this.position=startPosition;
+		this.lastSector= new Vector3(0,0); //This gets auto Updated anyways :)
 	}
 
 
@@ -47,9 +56,12 @@ public class Actor : Steering
 		//Spawn our model
 		model=GameObject.Instantiate(model,position, Quaternion.Euler(facing)) as GameObject;
 	}
-
+	//Update Sector ever 0.5 seconds
+	float updateSector=0.5f;
+	float timePassed;
 	public void Update_Actor(float timeElapsed)
 	{
+		timePassed+=timeElapsed;
 		//For now we Assume the Actor is always Wandering/Idle
 		Update_Steering(timeElapsed);
 
@@ -59,11 +71,18 @@ public class Actor : Steering
 		Avoid_Bounds();
 		//In Order to steer away from each other Set an avoidance radius= 2x bounding box, velocity = Max while inside it
 
+
+
+		//Update Sector?
+		if(timePassed>updateSector)
+		{
+			timePassed=0;
+			blackBoard.UpdateSector(this);
+		}
+		blackBoard.CheckCollision(this);
+
 		//Apply new Position location + facing direction
 		model.transform.position=position;
-
-
-
 		model.transform.rotation= Quaternion.LookRotation(facing);
 	}
 
