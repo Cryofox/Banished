@@ -2,7 +2,7 @@
 using System.Collections;
 //This Class inherits Mono as it needs to be triggered from within the game
 public class Logic_Controller : MonoBehaviour {
-
+	public static string playerFaction="MyFaction";
 
 
 
@@ -16,7 +16,7 @@ public class Logic_Controller : MonoBehaviour {
 	private float current_RealWorldTime;
 
 	//Managers for key game Logic
-	private Manager_BlackBoard man_BlackBoards;
+	public Manager_BlackBoard man_BlackBoards;
 	public Manager_Collision man_Collisions;
 
 	// FlowField Manager
@@ -86,7 +86,7 @@ public class Logic_Controller : MonoBehaviour {
 		//Spawn 10 "Player Faction" units
 		for(int i=0;i<debug_Test;i++)
 		{
-			man_BlackBoards.AddActor(new Actor(new Vector3(500,0,500)),"player");
+			man_BlackBoards.AddActor(new Actor(new Vector3(500,0,500)),playerFaction);
 		}
 
 		EventLog.Log_Message("World successfully Initialized");

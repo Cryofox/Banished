@@ -6,17 +6,20 @@ public class BlackBoard {
 	public string id_FactionName;
 	public Manager_Collision man_Collision;
 
-	//List of Buildings
+
 
 
 	//List of Units
 	List<Actor> units;
+	//List of Buildings
+	List<Building> buildings;
 
 	// Use this for initialization
 	public BlackBoard (string faction) 
 	{
 		this.id_FactionName= faction;
 		this.units = new List<Actor>();
+		this.buildings= new List<Building>();
 	}
 
 	//Adds the Character to the BlackBoard and Spawns the Unit in the Game World
@@ -27,6 +30,30 @@ public class BlackBoard {
 		unit.blackBoard= this; //Give the actor our reference for Sector Calls
 		unit.Spawn_Actor();
 	}
+
+	//Adds the Character to the BlackBoard and Spawns the Unit in the Game World
+	public void AddBuilding(Building building)
+	{
+		//No Duplicate searching (Slow Down)
+		buildings.Add(building);
+	}
+
+
+
+	//Adds the Character to the BlackBoard and Spawns the Unit in the Game World
+	public void RemoveActor(Actor unit)
+	{
+		//To remove the actor we need to Kill it.
+
+	}
+
+	//Adds the Character to the BlackBoard and Spawns the Unit in the Game World
+	public void RemoveBuilding(Building building)
+	{
+		//To remove the building we need to Kill it.
+		
+	}
+
 
 	//Add Building
 
@@ -39,8 +66,6 @@ public class BlackBoard {
 		}
 
 	}
-
-
 
 	//Callbacks from Actor to BlackBoard
 	public void UpdateSector(Actor unit)
@@ -55,6 +80,8 @@ public class BlackBoard {
 		//Call update sector
 		man_Collision.Collision_Check(unit);
 	}
+
+
 
 
 }

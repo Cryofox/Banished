@@ -36,6 +36,18 @@ public class Manager_BlackBoard
 		//man_Collision.Initial_Addition(unit);
 	}
 
+	//This is how Buildings get Added to the Game
+	public void AddBuilding(Building building, string factionName)
+	{
+		//Here we add the Actor to the specified Faction
+		Add_Faction(factionName); //Ensure faction exists
+
+		((BlackBoard)hasht_Boards[factionName]).AddBuilding(building); //Add Actor to Board
+		//Insert our new Unit inside the Collision Field
+		//man_Collision.Initial_Addition(unit);
+	}
+
+
 	//Create the BlackBoard to manage this Factions Content
 	public void Add_Faction(string factionName)
 	{
@@ -50,6 +62,8 @@ public class Manager_BlackBoard
 
 		EventLog.Log_Message("Faction:"+factionName+" has been added to Database");
 	}
+
+
 
 	public void Remove_Faction(string factionName)
 	{

@@ -34,33 +34,22 @@ public class Manager_Collision
 		}
 	}
 
+	//This is called once during initial placement
+	public void Place_Building(Building building)
+	{
+		int segmentLength = dimension/divCount;
+		// Calculate the unit's sector using it's Center location
+		Vector3 point = building.position;
+
+		int xSector = (int)(point.x)/ segmentLength;
+		int ySector = (int)(point.z)/ segmentLength;
+
+		//Remove Unit from Last Sector
+		sectors[xSector][ySector].AddBuilding(building);
+	}
 
 
-	//Static Objects Stored in SStatic List, they are only Added/Removed upon
-	//construction/deconstruction
-
-	//Dynamic Objects stored in Dynamic List, these guys update their position every frame.
-
-	//Once Actors are placed inside a sector, there isn't a need for constant
-	//removal + insert, simply check each sector that is not empty, and checks its units.
-
-	// public void Initial_Addition(Actor unit)
-	// {
-	// 	int segmentLength = dimension/divCount;
-	// 	// Calculate the unit's sector using it's Center location
-	// 	Vector3 point = unit.unitPosition;
-
-	// 	int xSector = (int)(point.x)/ segmentLength;
-	// 	int ySector = (int)(point.z)/ segmentLength;
-
-	// 	if(xSector<0 || xSector> dimension)
-	// 	{xSector=0;}
-	// 	if(ySector<0 || ySector> dimension)
-	// 	{ySector=0;}
-
-	// 	sectors[xSector][ySector].Initial_AddUnit(unit);
-	// }
-
+	//This is called by units and their location gets updated each call
 	public void Update_Sector(Actor unit)
 	{
 		int segmentLength = dimension/divCount;
@@ -105,6 +94,8 @@ public class Manager_Collision
 
 		int tl_xSector = (int)(tL_x)/ segmentLength;
 		int tl_ySector = (int)(tL_y)/ segmentLength;
+
+		//Atm only check current Square, no adjacent squares
 		//Remove Unit from Last Sector
 
 		// //4 Checks are needed :/
