@@ -47,10 +47,23 @@ public class Player_Controller : MonoBehaviour {
 					building.DeSelect_Ghost();
 					building=null;
 				}
-				building= new Building();
+				building= new Tree();
 				building.Select_Ghost();
 				EventLog.Log_Message("Placing Building");
 			}
+			if(Input.GetKeyDown(KeyCode.R))
+			{
+				//Setup Tree for Placement
+				if(building!=null)
+				{
+					building.DeSelect_Ghost();
+					building=null;
+				}
+				building= new Rock();
+				building.Select_Ghost();
+				EventLog.Log_Message("Placing Building");
+			}
+
 
 			//Exit Placement State, go back to Idle
 			if(Input.GetKeyDown(KeyCode.Escape))
@@ -81,12 +94,7 @@ public class Player_Controller : MonoBehaviour {
 					}
 				}
 			}
-
-
-
 		}
-
-
 	}
 
 
@@ -124,7 +132,7 @@ public class Player_Controller : MonoBehaviour {
 Legend:
 B= Build
 	T= Tree, Debug Only...Default Building is a Tree...because that's what I've placed so far.
-
+	R= Rock
 
 Escape = Back
 */

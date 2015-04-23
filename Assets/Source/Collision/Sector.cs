@@ -96,10 +96,10 @@ public class Sector
 				float tar_maxY= dynamicEntities[i].unitPosition.z + dynamicEntities[i].collisionBox.vertical_halfOffset;		
 
 
-				if(cur_maxX > tar_minX && 
-				   cur_minX < tar_maxX &&
-				   cur_maxY > tar_minY &&
-				   cur_minY < tar_maxY)
+				if(	cur_maxX > tar_minX && 
+					cur_minX < tar_maxX &&
+					cur_maxY > tar_minY &&
+					cur_minY < tar_maxY	)
 				{
 					Vector3 botLeft =  new Vector3(cur_minX,0,cur_minY);
 					Vector3 topRight=  new Vector3(cur_maxX,0,cur_maxY);

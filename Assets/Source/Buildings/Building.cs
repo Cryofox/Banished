@@ -10,7 +10,7 @@ public class Building
 
 
 	public Vector3 position;
-	GameObject model;
+	protected GameObject model;
 
 
 	//Building Can't have a startPosition because that would imply it was Placed
@@ -19,11 +19,18 @@ public class Building
 		// 1x1
 		this.collisionBox = new BoundingBox(1,1);		
 	}
-	//Select Ghost
-	public void Select_Ghost()
+
+
+	protected virtual void Load_Model()
 	{
 		//Here we use a Cube for the Actor
 		model=	Resources.Load<GameObject>("GameObject/Generic_Tree");
+	}
+
+	//Select Ghost
+	public void Select_Ghost()
+	{
+		Load_Model();
 		//Spawn our model
 		model=GameObject.Instantiate(model,position, Quaternion.identity) as GameObject;
 	}
