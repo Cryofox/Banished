@@ -37,6 +37,7 @@ public class Manager_BlackBoard
 	}
 
 	//This is how Buildings get Added to the Game
+	
 	public void AddBuilding(Building building, string factionName)
 	{
 		//Here we add the Actor to the specified Faction

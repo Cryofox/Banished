@@ -35,7 +35,9 @@ public class Manager_Collision
 	}
 
 	//This is called once during initial placement
-	public void Place_Building(Building building)
+	//Returns True if the Object can be placed, and places it into the sector
+	//Otherwise it returns False and no additions get amde
+	public bool Place_Building(Building building)
 	{
 		int segmentLength = dimension/divCount;
 		// Calculate the unit's sector using it's Center location
@@ -44,8 +46,16 @@ public class Manager_Collision
 		int xSector = (int)(point.x)/ segmentLength;
 		int ySector = (int)(point.z)/ segmentLength;
 
-		//Remove Unit from Last Sector
-		sectors[xSector][ySector].AddBuilding(building);
+
+		//Check if the Object can be placed here First
+		//If no collisions occur, the building is placed
+		if(!sectors[xSector][ySector].checkCollision(building))
+		{
+			sectors[xSector][ySector].AddBuilding(building);
+			return true;
+		}
+
+		return false;
 	}
 
 

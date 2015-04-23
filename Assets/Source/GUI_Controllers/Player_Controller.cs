@@ -70,9 +70,15 @@ public class Player_Controller : MonoBehaviour {
 				//0=Left, 1 =Right, 2 = Middle
 				if(Input.GetMouseButtonDown(0))
 				{
-					logic_Cont.man_Collisions.Place_Building(building);
-					logic_Cont.man_BlackBoards.AddBuilding(building, Logic_Controller.playerFaction);
-					building=null;
+					//Check if something collides with the placement before placing
+
+					//Check if building can be placed, and if so place it. 
+					//Otherwise we don't
+					if(logic_Cont.man_Collisions.Place_Building(building))
+					{
+						logic_Cont.man_BlackBoards.AddBuilding(building, Logic_Controller.playerFaction);
+						building=null;
+					}
 				}
 			}
 
