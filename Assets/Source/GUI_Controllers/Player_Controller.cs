@@ -64,6 +64,20 @@ public class Player_Controller : MonoBehaviour {
 				EventLog.Log_Message("Placing Building");
 			}
 
+			if(Input.GetKeyDown(KeyCode.H))
+			{
+				//Setup Tree for Placement
+				if(building!=null)
+				{
+					building.DeSelect_Ghost();
+					building=null;
+				}
+				building= new House();
+				building.Select_Ghost();
+				EventLog.Log_Message("Placing Building");
+			}
+
+
 
 			//Exit Placement State, go back to Idle
 			if(Input.GetKeyDown(KeyCode.Escape))
@@ -76,7 +90,7 @@ public class Player_Controller : MonoBehaviour {
 				}
 				current_state= Player_State.Idle;
 			}		
-
+			//When a building is highlighted
 			if(building!=null)
 			{	
 				building.Set_Position(GetWorldPosition());	
@@ -93,6 +107,16 @@ public class Player_Controller : MonoBehaviour {
 						building=null;
 					}
 				}
+
+				else if(Input.GetKeyDown(KeyCode.Period))
+				{
+					building.Rotate_Right();
+				}
+
+				else if(Input.GetKeyDown(KeyCode.Comma))
+				{
+					building.Rotate_Left();
+				}
 			}
 		}
 	}
@@ -107,7 +131,6 @@ public class Player_Controller : MonoBehaviour {
 	//Also useful for checking on characters
 	Vector3 GetWorldPosition()
 	{
-
         //Selecting Objects
         Rect screenRect = new Rect(0,0, Screen.width, Screen.height);
         if(screenRect.Contains(Input.mousePosition))

@@ -15,4 +15,12 @@ public class BoundingBox {
 	}
 
 
+	//Swap H with V
+	public void Rotate()
+	{
+		float temp = horizontal_halfOffset;
+		horizontal_halfOffset= vertical_halfOffset;
+		vertical_halfOffset= temp;
+	}
+
 }
