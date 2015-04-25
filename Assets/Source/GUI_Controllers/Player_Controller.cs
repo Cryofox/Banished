@@ -7,6 +7,10 @@ public class Player_Controller : MonoBehaviour {
 	public AnimationCurve zoomCurve;
 	public AnimationCurve distanceOffsetCurve;	
 
+//	GController_CtxBuilding ctx_BuildMan;
+
+
+
 	//Player States
 	enum Player_State{Idle, Placing_Building};
 
@@ -21,6 +25,10 @@ public class Player_Controller : MonoBehaviour {
 		current_state= Player_State.Idle;
 		//Initialization Code
 		logic_Cont=GameObject.Find("Logic_Controller").GetComponent<Logic_Controller>();
+
+		//Setup Ctx
+		//ctx_BuildMan = new GController_CtxBuilding(logic_Cont);
+		GController_CtxBuilding.Initialize(logic_Cont);
 	}
 
 
@@ -31,11 +39,23 @@ public class Player_Controller : MonoBehaviour {
 	void Update()
 	{
 		if(current_state== Player_State.Idle)
+		{
 			if (Input.GetKeyDown (KeyCode.B))
 			{
 				current_state= Player_State.Placing_Building;
 			}
+			//If left clicking in the world in Idle mode
+			if(Input.GetMouseButtonDown(0))
+			{
+				//Check if something collides with the placement before placing
 
+				//Check if building can be placed, and if so place it. 
+				//Otherwise we don't
+				Building selectedBuild=logic_Cont.man_Collisions.Collision_GetBuilding(GetWorldPosition());
+				GController_CtxBuilding.Update_GTXInfo(selectedBuild);
+			}
+
+		}
 		//We are Placing a Building
 		if(current_state==Player_State.Placing_Building)
 		{
@@ -80,7 +100,7 @@ public class Player_Controller : MonoBehaviour {
 
 
 			//Exit Placement State, go back to Idle
-			if(Input.GetKeyDown(KeyCode.Escape))
+			if(Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
 			{
 				//Setup Tree for Placement
 				if(building!=null)
@@ -162,6 +182,6 @@ Escape = Back
 
 
 
-
+	//Gui Buttons Pressed
 
 }

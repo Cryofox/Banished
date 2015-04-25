@@ -8,7 +8,7 @@ public class Storage : Building  {
 	{
 		// 1x1
 	}
-	protected virtual void Setup_Building()
+	protected override void Setup_Building()
 	{
 		this.name="Storage";
 		this.collisionBox = new BoundingBox(10,10);		

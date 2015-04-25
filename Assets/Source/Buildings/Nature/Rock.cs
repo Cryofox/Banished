@@ -7,7 +7,7 @@ public class Rock : Building {
 	{
 	
 	}
-	protected virtual void Setup_Building()
+	protected override void Setup_Building()
 	{
 		this.collisionBox = new BoundingBox(2,2);		
 	}
