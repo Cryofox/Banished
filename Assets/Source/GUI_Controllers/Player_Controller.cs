@@ -2,14 +2,16 @@
 using System.Collections;
 
 public class Player_Controller : MonoBehaviour {
+	//Gui Panel_Ctx
+	Panel_Hover pnH_CtxBuild;
+
 	//Thsese curves may be used for controlling the Camera for
 	// a smooth curve in type effect when zooming.
 	public AnimationCurve zoomCurve;
 	public AnimationCurve distanceOffsetCurve;	
 
 //	GController_CtxBuilding ctx_BuildMan;
-
-
+	static UILabel lbl_MaxWorkers;
 
 	//Player States
 	enum Player_State{Idle, Placing_Building};
@@ -25,10 +27,10 @@ public class Player_Controller : MonoBehaviour {
 		current_state= Player_State.Idle;
 		//Initialization Code
 		logic_Cont=GameObject.Find("Logic_Controller").GetComponent<Logic_Controller>();
-
+		pnH_CtxBuild=GameObject.Find("UI Root/Camera/Panel_Main/Pnl_CtxSen_Building").GetComponent<Panel_Hover>();
 		//Setup Ctx
 		//ctx_BuildMan = new GController_CtxBuilding(logic_Cont);
-		GController_CtxBuilding.Initialize(logic_Cont);
+		GController_CtxBuilding.Initialize(logic_Cont.man_BlackBoards);
 	}
 
 
@@ -47,17 +49,20 @@ public class Player_Controller : MonoBehaviour {
 			//If left clicking in the world in Idle mode
 			if(Input.GetMouseButtonDown(0))
 			{
+				//Only perform task if mouse is not over GUI element
+				//Perform the Nested Check + Check if the panel itself is being hovered
+				if(pnH_CtxBuild.isMouseOver || pnH_CtxBuild.checkHover())
+					return;
 				//Check if something collides with the placement before placing
-
 				//Check if building can be placed, and if so place it. 
 				//Otherwise we don't
 				Building selectedBuild=logic_Cont.man_Collisions.Collision_GetBuilding(GetWorldPosition());
 				GController_CtxBuilding.Update_GTXInfo(selectedBuild);
+				EventLog.Log_Message("We just updated CTX!");
 			}
-
 		}
 		//We are Placing a Building
-		if(current_state==Player_State.Placing_Building)
+		else if(current_state==Player_State.Placing_Building)
 		{
 			if(Input.GetKeyDown(KeyCode.T))
 			{

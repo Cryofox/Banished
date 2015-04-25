@@ -4,36 +4,58 @@ using System.Collections;
 //Since there is only one for Buildings it makes sense to mark it static
 public static class GController_CtxBuilding {
 
-	public static Logic_Controller logic_Cont;
+	public static Manager_BlackBoard man_BlackBoards;
 
 	static UILabel lbl_MaxWorkers;
 	static UILabel lbl_CurWorkers;
 	static UILabel lbl_Name;
+	static Building selectedBuilding;
+	static bool wasButtonPressed;
 
-	public static void Initialize(Logic_Controller lgc)
+	public static void Initialize(Manager_BlackBoard man_Board)
 	{
 		//Acquire the Text Components we will modify
-		logic_Cont = lgc;
+		man_BlackBoards = man_Board;
 		lbl_MaxWorkers=GameObject.Find("UI Root/Camera/Panel_Main/Pnl_CtxSen_Building/Panel/Lbl_MaxWorkers").GetComponent<UILabel>();
 		lbl_CurWorkers=GameObject.Find("UI Root/Camera/Panel_Main/Pnl_CtxSen_Building/Panel/Lbl_CurrentWorkers").GetComponent<UILabel>();		
 		lbl_Name=GameObject.Find("UI Root/Camera/Panel_Main/Pnl_CtxSen_Building/Panel/Lbl_Name").GetComponent<UILabel>();		
+		wasButtonPressed=false;
 	}
 
 	public static void Update_GTXInfo(Building building)
 	{
+		//In the event a button was pressed reset to false and break out.
+		//Otherwise we refocus the CTX
+		// if(wasButtonPressed==true)
+		// {
+		// 	wasButtonPressed=false;
+		// 	return;
+		// }
 		//Update the Onscreen GUI
 		if(building==null)
 		{
 			lbl_MaxWorkers.text= "??";
 			lbl_CurWorkers.text= "??";
-			lbl_Name.text="??";
-			return;		
+			lbl_Name.text="??";	
 		}
-		lbl_MaxWorkers.text= (building.maxWorkers).ToString();
-		lbl_CurWorkers.text= (building.assignedUnits.Count).ToString();
-		lbl_Name.text=(building.name);
+		else
+		{
+			lbl_MaxWorkers.text= (building.maxWorkers).ToString();
+			lbl_CurWorkers.text= (building.assignedUnits.Count).ToString();
+			lbl_Name.text=(building.name);
+		}
+			selectedBuilding=building;
 	}
+	public static void AddUnit()
+	{
+		if(selectedBuilding!=null)
+			man_BlackBoards.AssignUnit(Logic_Controller.playerFaction,selectedBuilding);
 
-
-
+		EventLog.Log_Message("Add Unit Successful!");
+	}
+	public static void RemoveUnit()
+	{
+		if(selectedBuilding!=null)
+			man_BlackBoards.DeAssignUnit(Logic_Controller.playerFaction,selectedBuilding);
+	}
 }
