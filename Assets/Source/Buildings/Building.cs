@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 public class Building 
 {
+	public string name;
+	public int maxWorkers=0;
+	public List<Actor> assignedUnits;
 
 
 	//Persistant Information
@@ -16,16 +19,40 @@ public class Building
 	//Building Can't have a startPosition because that would imply it was Placed
 	public Building()
 	{
-		// 1x1
-		this.collisionBox = new BoundingBox(1,1);		
+		Setup_Building();
 	}
 
-
+	protected virtual void Setup_Building()
+	{
+		// 1x1
+		this.collisionBox = new BoundingBox(1,1);			
+	}
 	protected virtual void Load_Model()
 	{
 		//Here we use a Cube for the Actor
 		model=	Resources.Load<GameObject>("GameObject/Generic_Tree");
 	}
+
+	//Add the unit to the building.
+	//If the assignment fails this function returns false
+	public bool AssignUnit(Actor unit)
+	{
+		//We do not add the unit
+		if(assignedUnits==null || assignedUnits.Count>=maxWorkers)
+		{
+			return false;
+		}
+
+		assignedUnits.Add(unit);
+		return true;
+	}
+
+
+
+
+
+
+
 
 	//Select Ghost
 	public void Select_Ghost()
