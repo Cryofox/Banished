@@ -4,6 +4,8 @@ using System.Collections;
 public class Player_Controller : MonoBehaviour {
 	//Gui Panel_Ctx
 	Panel_Hover pnH_CtxBuild;
+	Panel_Hover pnH_RoleManager;
+
 	UILabel lbl_DebugState;
 	//Thsese curves may be used for controlling the Camera for
 	// a smooth curve in type effect when zooming.
@@ -28,7 +30,9 @@ public class Player_Controller : MonoBehaviour {
 		//Initialization Code
 		logic_Cont=GameObject.Find("Logic_Controller").GetComponent<Logic_Controller>();
 		pnH_CtxBuild=GameObject.Find("UI Root/Camera/Panel_Main/Pnl_CtxSen_Building").GetComponent<Panel_Hover>();
+		pnH_RoleManager=GameObject.Find("UI Root/Camera/Panel_Main/Pnl_RoleManager").GetComponent<Panel_Hover>();
 		lbl_DebugState=GameObject.Find("UI Root/Camera/Panel_Main/Lbl_DebugState").GetComponent<UILabel>();
+		
 		//Setup Ctx
 		//ctx_BuildMan = new GController_CtxBuilding(logic_Cont);
 		GController_CtxBuilding.Initialize(logic_Cont.man_BlackBoards);
@@ -52,8 +56,9 @@ public class Player_Controller : MonoBehaviour {
 			{
 				//Only perform task if mouse is not over GUI element
 				//Perform the Nested Check + Check if the panel itself is being hovered
-				if(pnH_CtxBuild.isMouseOver || pnH_CtxBuild.checkHover())
+				if(MouseOnGui())
 					return;
+
 				//Check if something collides with the placement before placing
 				//Check if building can be placed, and if so place it. 
 				//Otherwise we don't
@@ -178,6 +183,15 @@ public class Player_Controller : MonoBehaviour {
 
 
 
+	bool MouseOnGui()
+	{
+		if(pnH_CtxBuild.isMouseOver  || pnH_CtxBuild.checkHover())
+			return true;
+	
+		if(pnH_RoleManager.isMouseOver || pnH_RoleManager.checkHover())
+			return true;
+		return false;
+	}
 /*
 Legend:
 B= Build
