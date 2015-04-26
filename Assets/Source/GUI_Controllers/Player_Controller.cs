@@ -4,7 +4,7 @@ using System.Collections;
 public class Player_Controller : MonoBehaviour {
 	//Gui Panel_Ctx
 	Panel_Hover pnH_CtxBuild;
-
+	UILabel lbl_DebugState;
 	//Thsese curves may be used for controlling the Camera for
 	// a smooth curve in type effect when zooming.
 	public AnimationCurve zoomCurve;
@@ -28,6 +28,7 @@ public class Player_Controller : MonoBehaviour {
 		//Initialization Code
 		logic_Cont=GameObject.Find("Logic_Controller").GetComponent<Logic_Controller>();
 		pnH_CtxBuild=GameObject.Find("UI Root/Camera/Panel_Main/Pnl_CtxSen_Building").GetComponent<Panel_Hover>();
+		lbl_DebugState=GameObject.Find("UI Root/Camera/Panel_Main/Lbl_DebugState").GetComponent<UILabel>();
 		//Setup Ctx
 		//ctx_BuildMan = new GController_CtxBuilding(logic_Cont);
 		GController_CtxBuilding.Initialize(logic_Cont.man_BlackBoards);
@@ -144,6 +145,7 @@ public class Player_Controller : MonoBehaviour {
 				}
 			}
 		}
+		lbl_DebugState.text = current_state.ToString();
 	}
 
 

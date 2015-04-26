@@ -78,7 +78,7 @@ public class Panel_Hover : MonoBehaviour {
 					Panel_Hover ph = child.gameObject.GetComponent<Panel_Hover>();
 					if(ph!=null && ph.checkHover())
 					{
-						_isOver=true;
+						//_isOver=true;
 						EventLog.Log_Message("_Mouse is:"+ _isOver);
 						return true;
 					}
