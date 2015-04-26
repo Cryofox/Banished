@@ -73,24 +73,14 @@ public class Logic_Controller : MonoBehaviour {
 
 	//5k = Decent
 
-	//Game starts you off with 10 people anyways
-	int debug_Test=1000;
-	void Initialize_World()
-	{
-		//Create the Collision Handler
-		//World dimensions currently Stored inside here
-		man_Collisions= new Manager_Collision();
 
-		//Create the Unit Faction Handler
-		man_BlackBoards= new Manager_BlackBoard(man_Collisions);
-		//Spawn 10 "Player Faction" units
-		for(int i=0;i<debug_Test;i++)
-		{
-			man_BlackBoards.AddActor(new Actor(new Vector3(500,0,500)),playerFaction);
-		}
 
-		EventLog.Log_Message("World successfully Initialized");
-	}
+
+
+
+
+
+
 
 
 
@@ -106,5 +96,132 @@ public class Logic_Controller : MonoBehaviour {
 		//Call Garbage Collector
 
 	}
+
+
+
+
+	//Game starts you off with 10 people anyways
+	int debug_Test=1000;
+
+
+	//This function will setup the world with a random displacement of
+	//trees rocks etc
+	void Initialize_World()
+	{
+		//Create the Collision Handler
+		//World dimensions currently Stored inside here
+		man_Collisions= new Manager_Collision();
+
+		//Create the Unit Faction Handler
+		man_BlackBoards= new Manager_BlackBoard(man_Collisions);
+		//Spawn 10 "Player Faction" units
+		// for(int i=0;i<debug_Test;i++)
+		// {
+		// 	man_BlackBoards.AddActor(new Actor(new Vector3(500,0,500)),playerFaction);
+		// }
+		AddRandomTrees();
+		AddRandomRocks();
+
+		//Position camera and spawn player's units
+		SetupPlayer();
+		EventLog.Log_Message("World successfully Initialized");
+	}
+
+	//Add some Random Trees
+
+	readonly int debugTreeCount=10000;
+	readonly int debugRockCount=5000;
+	void AddRandomTrees()
+	{
+		//Lets see what adding 1000 trees at random looks like
+		//If we can place a building at this location, then we place it.
+		//We also add it to Blackboard for consistency
+		int treeCount=0;
+		while(treeCount<debugTreeCount)
+		{
+			Building building= new Tree();
+			bool isPlaced=false;
+			while(!isPlaced)
+			{
+				//Randomize the X/Z
+				float x= Random.Range(0,Manager_Collision.dimension);
+				float y= Random.Range(0,Manager_Collision.dimension);
+				//We need to create the GO
+				//Select Ghost may be a poor name, but it was conjured for building 
+				//placement via player
+				building.Select_Ghost();
+				building.Set_Position(new Vector3(x,0,y));			
+				if(man_Collisions.Place_Building(building))
+				{
+					man_BlackBoards.AddBuilding(building, "Nature");
+					treeCount++;
+					isPlaced=true;
+				}
+			}
+		}
+	}
+
+	void AddRandomRocks()
+	{
+		//Lets see what adding 1000 trees at random looks like
+		//If we can place a building at this location, then we place it.
+		//We also add it to Blackboard for consistency
+		int rockCount=0;
+		while(rockCount<debugRockCount)
+		{
+			Building building= new Rock();
+			bool isPlaced=false;
+			while(!isPlaced)
+			{
+				//Randomize the X/Z
+				float x= Random.Range(0,Manager_Collision.dimension);
+				float y= Random.Range(0,Manager_Collision.dimension);
+				//We need to create the GO
+				//Select Ghost may be a poor name, but it was conjured for building 
+				//placement via player
+				building.Select_Ghost();
+				building.Set_Position(new Vector3(x,0,y));			
+				if(man_Collisions.Place_Building(building))
+				{
+					man_BlackBoards.AddBuilding(building, "Nature");
+					rockCount++;
+					isPlaced=true;
+				}
+			}
+		}
+	}
+	//Now That Sector information is maintained, a unit can cross examined for collision
+	//Start with 10 units
+	void SetupPlayer()
+	{
+		//Choose a start location
+		bool isPlaced=false;
+		while(!isPlaced)
+		{
+			//Randomize the X/Z
+			float x= Random.Range(0,Manager_Collision.dimension);
+			float y= Random.Range(0,Manager_Collision.dimension);
+			//We need to create the GO
+			//Select Ghost may be a poor name, but it was conjured for building 
+			//placement via player
+
+			Vector3 startPos=new Vector3(x,0,y);			
+			if(man_Collisions.Collision_GetBuilding(startPos)==null)
+			{
+				for(int i=0;i<10;i++)
+				{
+					man_BlackBoards.AddActor(new Actor(startPos),playerFaction);
+				}
+				isPlaced=true;
+				Camera.main.transform.position=new Vector3(x,Camera.main.transform.position.y,y);
+
+			}
+		}
+		
+	}
+	//public Building Collision_GetBuilding(Vector3 point)
+
+
+
 
 }

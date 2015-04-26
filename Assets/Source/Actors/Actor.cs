@@ -40,7 +40,7 @@ public class Actor : Steering
 
 	public Actor(Vector3 startPosition)
 	{
-
+		maxSpeed=2.5f;
 		// 1x1
 		this.collisionBox = new BoundingBox(1,1);		
 		this.position=startPosition;
