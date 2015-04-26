@@ -54,7 +54,7 @@ public class Actor : Steering
 		model=	Resources.Load<GameObject>("Generic_Actor");
 
 		//Spawn our model
-		// model=GameObject.Instantiate(model,position, Quaternion.Euler(facing)) as GameObject;
+		model=GameObject.Instantiate(model,position, Quaternion.Euler(facing)) as GameObject;
 	}
 	//Update Sector ever 0.5 seconds
 	float updateSector=0.5f;

@@ -151,8 +151,25 @@ public class Player_Controller : MonoBehaviour {
 			}
 		}
 		lbl_DebugState.text = current_state.ToString();
-	}
+		MoveView();
+		//Regardless State we move the camera
 
+	}
+	void MoveView()
+	{
+		int up=0;
+		int right=0;
+		if(Input.GetKey(KeyCode.W))
+			up+=1;
+		if(Input.GetKey(KeyCode.S))
+			up-=1;
+		if(Input.GetKey(KeyCode.D))
+			right+=1;
+		if(Input.GetKey(KeyCode.A))
+			right-=1;
+
+		Camera.main.transform.position += new Vector3(right,0,up);
+	}
 
 
 
