@@ -59,7 +59,7 @@ public class Building
 	{
 		Load_Model();
 		//Spawn our model
-		// model=GameObject.Instantiate(model,position, Quaternion.identity) as GameObject;
+		model=GameObject.Instantiate(model,position, Quaternion.identity) as GameObject;
 	}
 	//DeSelect Ghost
 	public void DeSelect_Ghost()
