@@ -11,7 +11,7 @@ public class Inventory
 	string[] resource_Name;
 	int[]	 resource_Amount;
 
-	Inventory(int slots, int maxPerSlot)
+	public Inventory(int slots, int maxPerSlot)
 	{
 		maxSlots	= slots;
 		maxSlotAmnt	= maxPerSlot;

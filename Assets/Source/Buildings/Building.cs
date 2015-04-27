@@ -5,6 +5,7 @@ public class Building
 {
 	public string name;
 	public int maxWorkers=0;
+	public Inventory inventory;
 	public List<Actor> assignedUnits;
 
 
@@ -20,6 +21,7 @@ public class Building
 	public Building()
 	{
 		Setup_Building();
+		inventory= new Inventory(1,200);
 	}
 
 	protected virtual void Setup_Building()
