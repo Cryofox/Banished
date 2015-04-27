@@ -70,31 +70,33 @@ public class Player_Controller : MonoBehaviour {
 		//We are Placing a Building
 		else if(current_state==Player_State.Placing_Building)
 		{
-			if(Input.GetKeyDown(KeyCode.T))
-			{
-				//Setup Tree for Placement
-				if(building!=null)
-				{
-					building.DeSelect_Ghost();
-					building=null;
-				}
-				building= new Tree();
-				building.Select_Ghost();
-				EventLog.Log_Message("Placing Building");
-			}
-			if(Input.GetKeyDown(KeyCode.R))
-			{
-				//Setup Tree for Placement
-				if(building!=null)
-				{
-					building.DeSelect_Ghost();
-					building=null;
-				}
-				building= new Rock();
-				building.Select_Ghost();
-				EventLog.Log_Message("Placing Building");
-			}
+				// Trees and Rocks
+			// if(Input.GetKeyDown(KeyCode.T))
+			// {
+			// 	//Setup Tree for Placement
+			// 	if(building!=null)
+			// 	{
+			// 		building.DeSelect_Ghost();
+			// 		building=null;
+			// 	}
+			// 	building= new Tree();
+			// 	building.Select_Ghost();
+			// 	EventLog.Log_Message("Placing Building");
+			// }
+			// if(Input.GetKeyDown(KeyCode.R))
+			// {
+			// 	//Setup Tree for Placement
+			// 	if(building!=null)
+			// 	{
+			// 		building.DeSelect_Ghost();
+			// 		building=null;
+			// 	}
+			// 	building= new Rock();
+			// 	building.Select_Ghost();
+			// 	EventLog.Log_Message("Placing Building");
+			// }
 
+// House
 			if(Input.GetKeyDown(KeyCode.H))
 			{
 				//Setup Tree for Placement
@@ -105,9 +107,19 @@ public class Player_Controller : MonoBehaviour {
 				}
 				building= new House();
 				building.Select_Ghost();
-				EventLog.Log_Message("Placing Building");
 			}
-
+// Storage
+			if(Input.GetKeyDown(KeyCode.C))
+			{
+				//Setup Tree for Placement
+				if(building!=null)
+				{
+					building.DeSelect_Ghost();
+					building=null;
+				}
+				building= new Storage();
+				building.Select_Ghost();
+			}		
 
 
 			//Exit Placement State, go back to Idle
@@ -153,7 +165,6 @@ public class Player_Controller : MonoBehaviour {
 		lbl_DebugState.text = current_state.ToString();
 		MoveView();
 		//Regardless State we move the camera
-
 	}
 	void MoveView()
 	{
@@ -211,9 +222,14 @@ public class Player_Controller : MonoBehaviour {
 	}
 /*
 Legend:
+WSAD = Camera Move
+
 B= Build
 	T= Tree, Debug Only...Default Building is a Tree...because that's what I've placed so far.
 	R= Rock
+
+	H=House
+	C=Storage
 
 Escape = Back
 */

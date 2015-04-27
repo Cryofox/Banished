@@ -91,8 +91,8 @@ public class Manager_Collision
 		float bL_x 		= unit.unitPosition.x - unit.collisionBox.horizontal_halfOffset;
 		float bL_y		= unit.unitPosition.z - unit.collisionBox.vertical_halfOffset;
 
-		float tL_x 		= unit.unitPosition.x + unit.collisionBox.horizontal_halfOffset;
-		float tL_y		= unit.unitPosition.z + unit.collisionBox.vertical_halfOffset;
+		// float tL_x 		= unit.unitPosition.x + unit.collisionBox.horizontal_halfOffset;
+		// float tL_y		= unit.unitPosition.z + unit.collisionBox.vertical_halfOffset;
 
 		//We now check the Sectors of these locations
 		int segmentLength = dimension/divCount;
@@ -102,8 +102,8 @@ public class Manager_Collision
 		int bl_xSector = (int)(bL_x)/ segmentLength;
 		int bl_ySector = (int)(bL_y)/ segmentLength;
 
-		int tl_xSector = (int)(tL_x)/ segmentLength;
-		int tl_ySector = (int)(tL_y)/ segmentLength;
+		// int tl_xSector = (int)(tL_x)/ segmentLength;
+		// int tl_ySector = (int)(tL_y)/ segmentLength;
 
 		//Atm only check current Square, no adjacent squares
 		//Remove Unit from Last Sector
