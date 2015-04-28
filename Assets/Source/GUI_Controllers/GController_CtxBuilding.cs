@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 //This class is marked static so any functionality can directly use it.
 //Since there is only one for Buildings it makes sense to mark it static
 public static class GController_CtxBuilding {
@@ -58,4 +59,17 @@ public static class GController_CtxBuilding {
 		if(selectedBuilding!=null)
 			man_BlackBoards.DeAssignUnit(Logic_Controller.playerFaction,selectedBuilding);
 	}
+	public static void Print_Inventory()
+	{
+		List<string> resources;
+		resources = selectedBuilding.inventory.Get_All_Resources();
+		EventLog.Log_Message("Inventory----");
+		for(int i=0;i<resources.Count;i++)
+		{
+			string message= "["+resources[i]+"]["+selectedBuilding.inventory.CheckResourceAmount(resources[i])+"]";
+			EventLog.Log_Message(message);
+		}
+	}
+
+
 }

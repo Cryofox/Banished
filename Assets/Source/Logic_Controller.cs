@@ -196,6 +196,10 @@ public class Logic_Controller : MonoBehaviour {
 	{
 		//Choose a start location
 		bool isPlaced=false;
+		Building building = new Storage();
+
+		building.Select_Ghost();
+		building.inventory.InsertResourceAmount("plank",200);
 		while(!isPlaced)
 		{
 			//Randomize the X/Z
@@ -206,16 +210,32 @@ public class Logic_Controller : MonoBehaviour {
 			//placement via player
 
 			Vector3 startPos=new Vector3(x,0,y);			
-			if(man_Collisions.Collision_GetBuilding(startPos)==null)
+			
+
+			building.Set_Position(startPos);
+
+			if(man_Collisions.Place_Building(building))
 			{
+				man_BlackBoards.AddBuilding(building, Logic_Controller.playerFaction);
 				for(int i=0;i<10;i++)
 				{
 					man_BlackBoards.AddActor(new Actor(startPos),playerFaction);
 				}
 				isPlaced=true;
-				Camera.main.transform.position=new Vector3(x,Camera.main.transform.position.y,y);
-
+				Camera.main.transform.position=new Vector3(x,Camera.main.transform.position.y,y);	
 			}
+
+
+			// if(man_Collisions.Collision_GetBuilding(startPos)==null)
+			// {
+			// for(int i=0;i<10;i++)
+			// {
+			// 	man_BlackBoards.AddActor(new Actor(startPos),playerFaction);
+			// }
+			// isPlaced=true;
+			// Camera.main.transform.position=new Vector3(x,Camera.main.transform.position.y,y);
+
+			// }
 		}
 		
 	}

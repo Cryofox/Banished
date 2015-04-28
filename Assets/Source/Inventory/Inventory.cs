@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 public class Inventory 
 {
 
@@ -132,6 +132,19 @@ public class Inventory
 		return roomAvailable;
 	}
 
+	//Returns the amount of items of a type of resource
+	public int CheckResourceAmount(string resourceName)
+	{
+		int occupiedRoom=0;
+		for(int i=0; i< maxSlots;i++)
+		{
+			if(resource_Name[i]==resourceName)
+			{
+				occupiedRoom += (resource_Amount[i]);
+			}
+		}		
+		return occupiedRoom;
+	}
 
 
 	//Returns the First resource type stored
@@ -145,6 +158,18 @@ public class Inventory
 
 		return "None";
 	}
+
+	public List<string> Get_All_Resources()
+	{
+		List<string> items= new List<string>();
+		for(int i=0; i< maxSlots;i++)
+			if(resource_Name[i]!="None")
+				if(!items.Contains(resource_Name[i]))
+					items.Add(resource_Name[i]);
+
+		return items;	
+	}
+
 
 
 }

@@ -99,7 +99,9 @@ public class Manager_BlackBoard
 
 
 	public void AssignUnit(string factionName, Building building)
-	{}
+	{
+		
+	}
 
 	public void DeAssignUnit(string factionName, Building building)
 	{}

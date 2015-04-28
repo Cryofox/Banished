@@ -16,6 +16,8 @@ public class Storage : Building  {
 		//Houses can have 4 People assigned to them
 		maxWorkers=2;
 		assignedUnits= new List<Actor>();
+		
+		inventory= new Inventory(20,200);
 	}
 
 	protected override void Load_Model()

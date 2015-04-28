@@ -21,13 +21,14 @@ public class Building
 	public Building()
 	{
 		Setup_Building();
-		inventory= new Inventory(1,200);
+
 	}
 
 	protected virtual void Setup_Building()
 	{
 		// 1x1
-		this.collisionBox = new BoundingBox(1,1);			
+		this.collisionBox = new BoundingBox(1,1);	
+		inventory= new Inventory(1,200);		
 	}
 	protected virtual void Load_Model()
 	{
