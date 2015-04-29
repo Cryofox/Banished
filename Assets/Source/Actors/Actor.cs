@@ -10,7 +10,7 @@ public class Actor : Steering
 
 	public BlackBoard blackBoard;
 
-
+	public Job job;
 
 	public Vector3 unitPosition
 	{
@@ -86,7 +86,13 @@ public class Actor : Steering
 		model.transform.rotation= Quaternion.LookRotation(facing);
 	}
 
+	public bool ContainsJob()
+	{
+		if(job==null)
+			return false;
 
+		return true;
+	}
 
 
 }

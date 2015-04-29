@@ -83,5 +83,23 @@ public class BlackBoard {
 
 
 
+	public void AssignUnit(Building building)
+	{
+		//Find a unit without a job.
+		//Attemp to assign it to the building
+		for(int i=0;i<units.Count;i++)
+		{
+			if(!units[i].ContainsJob())
+			{
+				building.AssignUnit(units[i]);	
+				return;
+			}
+		}
+	}
+
+	public void DeAssignUnit(Building building)
+	{
+		building.DeAssignUnit();	
+	}
 
 }

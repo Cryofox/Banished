@@ -100,10 +100,12 @@ public class Manager_BlackBoard
 
 	public void AssignUnit(string factionName, Building building)
 	{
-		
+		((BlackBoard)hasht_Boards[factionName]).AssignUnit(building);
 	}
 
 	public void DeAssignUnit(string factionName, Building building)
-	{}
+	{
+		((BlackBoard)hasht_Boards[factionName]).DeAssignUnit(building);
+	}
 
 }

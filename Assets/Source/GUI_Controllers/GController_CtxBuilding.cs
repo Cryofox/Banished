@@ -52,12 +52,16 @@ public static class GController_CtxBuilding {
 		if(selectedBuilding!=null)
 			man_BlackBoards.AssignUnit(Logic_Controller.playerFaction,selectedBuilding);
 
-		EventLog.Log_Message("Add Unit Successful!");
+		//Refresh Gui
+		Update_GTXInfo(selectedBuilding);
 	}
 	public static void RemoveUnit()
 	{
 		if(selectedBuilding!=null)
 			man_BlackBoards.DeAssignUnit(Logic_Controller.playerFaction,selectedBuilding);
+
+		//Refresh Gui
+		Update_GTXInfo(selectedBuilding);
 	}
 	public static void Print_Inventory()
 	{

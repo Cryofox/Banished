@@ -16,12 +16,10 @@ public class Building
 	public Vector3 position;
 	protected GameObject model;
 
-
 	//Building Can't have a startPosition because that would imply it was Placed
 	public Building()
 	{
 		Setup_Building();
-
 	}
 
 	protected virtual void Setup_Building()
@@ -38,20 +36,34 @@ public class Building
 
 	//Add the unit to the building.
 	//If the assignment fails this function returns false
-	public bool AssignUnit(Actor unit)
+	public virtual void AssignUnit(Actor unit)
 	{
 		//We do not add the unit
 		if(assignedUnits==null || assignedUnits.Count>=maxWorkers)
 		{
-			return false;
+			return;
 		}
 
 		assignedUnits.Add(unit);
-		return true;
+
+		//Be sure to overwrite this for each new Job
+		unit.job = new Job();
+
 	}
 
 
+	public void DeAssignUnit()
+	{
+		//We do not add the unit
+		if(assignedUnits==null || assignedUnits.Count==0)
+		{
+			return;
+		}
 
+		Actor unit = assignedUnits[0];
+		unit.job= null;
+		assignedUnits.RemoveAt(0);
+	}
 
 
 
