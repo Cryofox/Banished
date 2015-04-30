@@ -120,6 +120,18 @@ public class Player_Controller : MonoBehaviour {
 				building= new Storage();
 				building.Select_Ghost();
 			}		
+// Foresting Station
+			if(Input.GetKeyDown(KeyCode.F))
+			{
+				//Setup Tree for Placement
+				if(building!=null)
+				{
+					building.DeSelect_Ghost();
+					building=null;
+				}
+				building= new Foresting_Station();
+				building.Select_Ghost();
+			}			
 
 
 			//Exit Placement State, go back to Idle
@@ -230,7 +242,7 @@ B= Build
 
 	H=House
 	C=Storage
-
+	F=Forest Station
 Escape = Back
 */
 

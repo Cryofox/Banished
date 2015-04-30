@@ -38,12 +38,12 @@ public class Building
 	//If the assignment fails this function returns false
 	public virtual void AssignUnit(Actor unit)
 	{
-		//We do not add the unit
+		//If room doesn't exists for unit assignment
 		if(assignedUnits==null || assignedUnits.Count>=maxWorkers)
 		{
 			return;
 		}
-
+		//Add unit to assigned units list
 		assignedUnits.Add(unit);
 
 		//Be sure to overwrite this for each new Job
@@ -75,12 +75,26 @@ public class Building
 		Load_Model();
 		//Spawn our model
 		model=GameObject.Instantiate(model,position, Quaternion.identity) as GameObject;
+		Post_Instantiate();
 	}
+
+	public virtual void Post_Instantiate()
+	{
+
+	}
+
+
+
 	//DeSelect Ghost
 	public void DeSelect_Ghost()
 	{
 		Object.Destroy(model);
+		Destroy_Extra();
 	}	
+
+	public virtual void Destroy_Extra()
+	{}
+
 
 	public void Rotate_Right()
 	{

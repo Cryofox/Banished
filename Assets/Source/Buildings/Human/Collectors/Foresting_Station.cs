@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-public class Foresting_Station : Building  {
+public class Foresting_Station : Building  
+{
 	//Units assigned to Storages are responsible for dispersing goods
 	//to where they are most needed
 	public Foresting_Station ()
@@ -22,6 +23,32 @@ public class Foresting_Station : Building  {
 	{
 		model=	Resources.Load<GameObject>("GameObject/house");
 	}
+
+
+
+	//Collector Buildings have a special Setup
+	//They have a Ring
+	GameObject ring;
+	float collect_Diameter=100;
+
+	void Collector_Setup()
+	{	
+		ring =	Resources.Load<GameObject>("GameObject/Circle");
+		ring =GameObject.Instantiate(ring,position, Quaternion.identity) as GameObject;
+		ring.transform.localScale = new Vector3( collect_Diameter,1, collect_Diameter);
+		ring.transform.parent = model.transform;
+	}
+
+
+	public override void Post_Instantiate()
+	{
+		Collector_Setup();
+	}
+	public override void Destroy_Extra()
+	{
+		Object.Destroy(ring);
+	}
+
 
 
 }

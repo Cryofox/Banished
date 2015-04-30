@@ -65,6 +65,9 @@ public static class GController_CtxBuilding {
 	}
 	public static void Print_Inventory()
 	{
+		if(selectedBuilding.inventory==null)
+			return;
+			
 		List<string> resources;
 		resources = selectedBuilding.inventory.Get_All_Resources();
 		EventLog.Log_Message("Inventory----");
