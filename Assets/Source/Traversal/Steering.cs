@@ -142,7 +142,7 @@ public class Steering {
 		{
 			//Multiply by Max Value
 			desiredVector *=   (maxSpeed* (distance/radius));
-			Debug.Log("Applying Brakes!" + desiredVector);
+			// Debug.Log("Applying Brakes!" + desiredVector);
 		}	
 		else
 			desiredVector*=maxSpeed;

@@ -146,6 +146,18 @@ public class Manager_Collision
 		return sectors[xSector][ySector].Collision_GetBuilding(point);
 	}
 
+	public Actor Collision_GetUnit(Vector3 point)
+	{
+		// int segmentLength = dimension/divCount;
+		// Calculate the unit's sector using it's Center location
+		int xSector = (int)(point.x)/ segmentLength;
+		int ySector = (int)(point.z)/ segmentLength;
+
+		//Check if the Object can be placed here First
+		//If no collisions occur, the building is placed
+		return sectors[xSector][ySector].Collision_GetUnit(point);
+	}
+
 	//Each Unit will call the Collision Manager, 
 	public void Debug_DrawZones()
 	{

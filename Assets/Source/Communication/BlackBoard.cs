@@ -126,4 +126,43 @@ public class BlackBoard {
 
 
 
+	public Building FindNearestStorage(Actor unit)
+	{
+		//Cycle through all Buildings owned by faction
+		Building storage=null;
+		float distance=0;
+		string firstResource = unit.inventory.Get_Available_Resource();
+		for(int i=0;i<buildings.Count;i++)
+		{
+			if(buildings[i].name=="Storage")
+			{
+				if(storage==null)
+				{	
+					//If it has room for (A) resource then do eet.
+					if(buildings[i].inventory.CheckAvailableRoom(firstResource)>0)
+					{
+						storage=buildings[i];
+						distance= Vector3.Distance(unit.unitPosition, buildings[i].position);
+					}
+				}
+				else 
+				{
+					float temp = Vector3.Distance(unit.unitPosition, buildings[i].position);
+					if(temp<distance)
+					{
+						if(buildings[i].inventory.CheckAvailableRoom(firstResource)>0)
+						{
+							storage=buildings[i];
+							distance= temp;
+						}
+					}
+				}
+			}
+		}
+
+		//Future (Check Sectors, and slowly branch outward from unit's location)
+		return storage;
+	}
+
+
 }

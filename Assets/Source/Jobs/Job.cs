@@ -4,11 +4,16 @@ using System.Collections;
 public class Job  {
 
 	Building workPlace;
+	Building storage;
 	BlackBoard bboard;
 	Manager_Collision man_Collision;
+
+	public string jobName;
+
 	public Job(Building building)
 	{
 		workPlace = building;
+		jobName= "Default Job";
 	}
 	//BlackBoard and collision detection in case references need to be made from this class
 	public void AddEssentials(BlackBoard blackboard, Manager_Collision man_Col)
@@ -21,6 +26,7 @@ public class Job  {
 	//Working Range= 5;
 
 	float range = 4;
+
 	public virtual void Work(Actor unit)
 	{
 		// Collector Logic
@@ -37,7 +43,17 @@ public class Job  {
 		if(targetCollect==null)
 		{
 			if(unit.inventory.Get_Available_Resource()!="None")
-				unit.Store_Inventory();			
+			{
+				//First time it's called we assign
+				if(storage==null)
+					storage=bboard.FindNearestStorage(unit);
+
+
+				if(storage==null || storage.inventory.isFull())
+					unit.Idle();
+				else
+					unit.Store_Inventory(storage);		
+			}	
 		}
 		//Not Null
 		else
@@ -48,12 +64,21 @@ public class Job  {
 			//Does the actor have room for this resource?
 			if(unit.inventory.CheckAvailableRoom(resourceType)==0)
 			{
-				//The Job is to Store the Item
-				unit.Store_Inventory();
-			}
+				//First time it's called we assign
+				if(storage==null)
+					storage=bboard.FindNearestStorage(unit);
 
+				if(storage==null || storage.inventory.isFull())
+					unit.Idle();
+				else
+					unit.Store_Inventory(storage);	
+			}
 			//Trees exist and we have room in the inventory
-			unit.Harvest_From(targetCollect, range, resourceType);
+			else
+			{	
+				storage=null;//Reset Storage to re-poll when inventory full
+				unit.Harvest_From(targetCollect, range, resourceType);
+			}
 		}
 	}
 

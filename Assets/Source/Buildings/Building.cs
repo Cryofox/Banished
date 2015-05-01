@@ -131,7 +131,7 @@ public class Building
 	//Collector Buildings have a special Setup
 
 	public float range {
-		get{ return collect_Diameter;}
+		get{ return collect_Diameter/2;}
 	}
 
 

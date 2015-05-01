@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 //core class, vampires, ghosts, people, elves etc all Inherit from Actor
 public class Actor : Steering
 {
@@ -11,6 +11,9 @@ public class Actor : Steering
 	public BlackBoard blackBoard;
 
 	public Job job;
+
+	//They have a Ring
+	protected GameObject ring;
 
 	public Vector3 unitPosition
 	{
@@ -40,7 +43,7 @@ public class Actor : Steering
 
 	public Actor(Vector3 startPosition)
 	{
-		maxSpeed=2.5f;
+		maxSpeed=5f; //2.5f default
 		// 1x1
 		this.collisionBox = new BoundingBox(1,1);		
 		this.position=startPosition;
@@ -57,6 +60,15 @@ public class Actor : Steering
 
 		//Spawn our model
 		model=GameObject.Instantiate(model,position, Quaternion.Euler(facing)) as GameObject;
+
+
+		ring =	Resources.Load<GameObject>("GameObject/Circle");
+		ring =	GameObject.Instantiate(ring,position, Quaternion.identity) as GameObject;
+		ring.GetComponent<Renderer>().sharedMaterial= Resources.Load<Material>("Materials/Ring");
+		ring.transform.localScale = new Vector3( 2,1, 2);
+		ring.transform.parent = model.transform;
+
+		ring.SetActive(false);
 	}
 	//Update Sector ever 0.5 seconds
 	float updateSector=0.5f;
@@ -96,7 +108,9 @@ public class Actor : Steering
 
 		//Apply new Position location + facing direction
 		model.transform.position=position;
-		model.transform.rotation= Quaternion.LookRotation(facing);
+
+		if(facing!=Vector3.zero)
+			model.transform.rotation= Quaternion.LookRotation(facing);
 	}
 
 	public bool ContainsJob()
@@ -136,40 +150,84 @@ public class Actor : Steering
 		//2 Seek it
 		//Check distance
 
-		Arrive(target.position);
+		//Target Position is harvest Range from
+		Vector3 goal = target.position + new Vector3(harvestRange/5,0,0);
+
+		Arrive(goal);
+
+
 		if(Vector3.Distance(position, target.position) < harvestRange)
 		{	
 			//Wait untill Harvest Time is reached?
 			//Harvest Max available
 			int minAmount = Mathf.Min( inventory.CheckAvailableRoom(resourceType),5);
-			target.inventory.RequestResourceAmount(resourceType,minAmount);
-		
+			int amountPulled = target.inventory.RequestResourceAmount(resourceType,minAmount);
+			inventory.InsertResourceAmount(resourceType,amountPulled);
+
 			//After each pull check if it's inventory is empty. If it is destroy the Tree.
 			//This same logic will be used on herbs and rocks
 			if(target.inventory.Get_Available_Resource()=="None")
 				target.Destroy();
 		}
-		
 	}
 
-	public void Store_Inventory()
+	public void Store_Inventory(Building target)
 	{
 		myState= Actor_State.Storing;
 		//Store Logic
 		//Find Nearest Non-Full Storage
 
+		Arrive(target.position);
 
+
+		if(Vector3.Distance(position, target.position) < 1)
+		{	
+			//Empty as much shit as you can in the storage
+			List<string> resources= inventory.Get_All_Resources();
+
+			for(int i=0;i<resources.Count;i++)
+			{
+				int largestAmount = Mathf.Min( inventory.CheckResourceAmount(resources[i]),target.inventory.CheckAvailableRoom(resources[i]));
+				
+				inventory.RequestResourceAmount(resources[i],largestAmount);
+				target.inventory.InsertResourceAmount(resources[i],largestAmount);
+			}
+		}
 	}
 
 	public void Idle()
 	{
 		myState= Actor_State.Idle;
 		Wander();
-
 	}
 
 
 		//Player States
 	enum Actor_State{Idle, Harvesting, Storing, Panicked, Alerted};
 	Actor_State myState= Actor_State.Idle;
+
+
+	public string Get_State()
+	{
+		return myState.ToString();
+	}
+
+	public string Get_Job()
+	{
+		if(job==null)
+			return "None";
+		else	
+			return job.jobName;
+	}
+
+
+	public void Highlight()
+	{
+		ring.SetActive(true);
+	}
+	public void Darken()
+	{
+		ring.SetActive(false);
+	}
+
 }

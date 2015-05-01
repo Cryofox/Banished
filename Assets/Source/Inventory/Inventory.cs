@@ -159,6 +159,22 @@ public class Inventory
 		return "None";
 	}
 
+	public bool isFull()
+	{
+		int occupiedRoom=0;
+		for(int i=0; i< maxSlots;i++)
+		{
+			if(resource_Name[i]=="None")
+				return false;
+
+			if(resource_Amount[i]< maxSlotAmnt)
+				return false;
+			
+		}		
+		return true;
+
+	}
+
 	public List<string> Get_All_Resources()
 	{
 		List<string> items= new List<string>();

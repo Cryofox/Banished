@@ -15,7 +15,7 @@ public class Gui_Hover : MonoBehaviour {
 	void OnHover( bool isOver )
 	{
 		_isOver=isOver;
-		EventLog.Log_Message("GUI_Generic Mouse is:"+_isOver);
+		// EventLog.Log_Message("GUI_Generic Mouse is:"+_isOver);
 	}
 	
 

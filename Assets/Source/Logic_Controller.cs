@@ -89,6 +89,7 @@ public class Logic_Controller : MonoBehaviour {
 	{
 		man_BlackBoards.Update_Boards(timeElapsed);
 		man_Collisions.Debug_DrawZones();
+		GController_CtxUnit.Generic_Update();
 	}
 
 	void AutoSave_Routine()
