@@ -22,6 +22,7 @@ public class Manager_Collision
 		dimensionArea = 1000x1000 = 1 000, 000
 	*/
 	Sector[][] sectors;
+	int segmentLength;// = dimension/divCount;
 	public Manager_Collision()
 	{
 		//Initialize Sectors
@@ -32,6 +33,7 @@ public class Manager_Collision
 			for(int y=0;y<divCount;y++)
 				sectors[x][y]=new Sector();
 		}
+		segmentLength = dimension/divCount;
 	}
 
 	//This is called once during initial placement
@@ -94,11 +96,6 @@ public class Manager_Collision
 		// float tL_x 		= unit.unitPosition.x + unit.collisionBox.horizontal_halfOffset;
 		// float tL_y		= unit.unitPosition.z + unit.collisionBox.vertical_halfOffset;
 
-		//We now check the Sectors of these locations
-		int segmentLength = dimension/divCount;
-
-
-
 		int bl_xSector = (int)(bL_x)/ segmentLength;
 		int bl_ySector = (int)(bL_y)/ segmentLength;
 
@@ -139,7 +136,7 @@ public class Manager_Collision
 	//Now That Sector information is maintained, a unit can cross examined for collision
 	public Building Collision_GetBuilding(Vector3 point)
 	{
-		int segmentLength = dimension/divCount;
+		// int segmentLength = dimension/divCount;
 		// Calculate the unit's sector using it's Center location
 		int xSector = (int)(point.x)/ segmentLength;
 		int ySector = (int)(point.z)/ segmentLength;
@@ -148,7 +145,6 @@ public class Manager_Collision
 		//If no collisions occur, the building is placed
 		return sectors[xSector][ySector].Collision_GetBuilding(point);
 	}
-
 
 	//Each Unit will call the Collision Manager, 
 	public void Debug_DrawZones()
@@ -165,6 +161,121 @@ public class Manager_Collision
 			}
 		}		
 	}
+
+	public void Remove_Building(Building building)
+	{
+		int xSector = (int)(building.position.x)/ segmentLength;
+		int ySector = (int)(building.position.z)/ segmentLength;		
+
+		sectors[xSector][ySector].RemoveBuilding(building);
+	}
+
+	public void Remove_Building(Actor unit)
+	{
+		int xSector = (int)(unit.unitPosition.x)/ segmentLength;
+		int ySector = (int)(unit.unitPosition.z)/ segmentLength;		
+
+		sectors[xSector][ySector].RemoveUnit(unit);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	//This will find tree objects from a position within range
+	//It will return the first "Valid" tree available.
+	//Valid Means: it's within range 
+
+	//Problem: Will always return the same tree for X actors requesting from
+	//same building.
+	public Building FindinRange_Tree(Vector3 position, float distance)
+	{
+		//Step 1 calculate all sectors that Intersect
+
+		//Calculate Origin Position
+		int sectorX_origin= (int)(position.x) / segmentLength;
+		int sectorY_origin= (int)(position.z) / segmentLength;
+
+		int newSectorX = (int)(position.x-distance)/ segmentLength;
+		int newSectorY = (int)(position.x-distance)/ segmentLength;
+
+		//Check Center
+		Building tree = sectors[sectorX_origin][sectorY_origin].Find_Static_InRange("Tree",position,distance);
+		
+		if(tree!=null)
+			return tree;
+		if(newSectorX < sectorX_origin && newSectorY < sectorY_origin)
+		{
+			//bottom Left corner is hit aswell meaning minimum 3 checks
+
+			//Check Left
+			if(tree!=null)
+			
+				return tree;
+			//Check Bottom
+			if(tree!=null)
+				return tree;
+			//Check Bottom Left
+			if(tree!=null)
+				return tree;
+		}
+		else if(newSectorX < sectorX_origin)
+		{
+			//Only check Left
+			if(tree!=null)
+				return tree;
+		}
+		else if(newSectorY < sectorY_origin)
+		{
+			//Only check Bottom
+			if(tree!=null)
+				return tree;
+		}
+
+		//Perform same check for opposite side
+		newSectorX = (int)(position.x+distance)/ segmentLength;
+		newSectorY = (int)(position.x+distance)/ segmentLength;
+
+		if(newSectorX > sectorX_origin && newSectorY > sectorY_origin)
+		{
+			//Top Right corner is hit aswell meaning minimum 3 checks
+
+			//Check Right
+			if(tree!=null)
+				return tree;
+			//Check Top
+			if(tree!=null)
+				return tree;
+			//Check Top Right
+			if(tree!=null)
+				return tree;
+		}
+		else if(newSectorX > sectorX_origin)
+		{
+			//Only check Right
+			if(tree!=null)
+				return tree;
+		}
+		else if(newSectorY > sectorY_origin)
+		{
+			//Only check Top
+			if(tree!=null)
+				return tree;
+		}
+
+
+
+		return null;
+	}
+
+
 
 
 }

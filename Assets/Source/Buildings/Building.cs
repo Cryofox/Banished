@@ -3,11 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 public class Building 
 {
+	public BlackBoard faction;
 	public string name;
 	public int maxWorkers=0;
 	public Inventory inventory;
 	public List<Actor> assignedUnits;
 
+	//The max amount of items able to be "harvested" from a resource
+	public float harvestAmount=0;
+	
 
 	//Persistant Information
 	public BoundingBox collisionBox;
@@ -19,6 +23,7 @@ public class Building
 	//Building Can't have a startPosition because that would imply it was Placed
 	public Building()
 	{
+		name="DefaultBuilding";
 		Setup_Building();
 	}
 
@@ -36,7 +41,7 @@ public class Building
 
 	//Add the unit to the building.
 	//If the assignment fails this function returns false
-	public virtual void AssignUnit(Actor unit)
+	public void AssignUnit(Actor unit)
 	{
 		//If room doesn't exists for unit assignment
 		if(assignedUnits==null || assignedUnits.Count>=maxWorkers)
@@ -46,11 +51,15 @@ public class Building
 		//Add unit to assigned units list
 		assignedUnits.Add(unit);
 
+		Job job  = LoadJob();
 		//Be sure to overwrite this for each new Job
-		unit.job = new Job();
-
+		unit.AssignJob(job);
 	}
 
+	public virtual Job LoadJob()
+	{
+		return new Job(this);
+	}
 
 	public void DeAssignUnit()
 	{
@@ -119,6 +128,32 @@ public class Building
 		position= reqPosition;
 		model.transform.position=position;		
 	}
+	//Collector Buildings have a special Setup
 
+	public float range {
+		get{ return collect_Diameter;}
+	}
+
+
+	//They have a Ring
+	protected GameObject ring;
+	protected float collect_Diameter=100;
+
+
+	public void Destroy()
+	{
+		//Destroy animation
+
+		//Remove units assigned here
+		if(assignedUnits!=null)
+			while(assignedUnits.Count>0)
+			{DeAssignUnit();}
+
+		//Remove from BlackBoard and sector info
+		faction.DestroyBuilding(this);
+
+		Object.Destroy(ring);
+		Object.Destroy(model);
+	}
 }
 

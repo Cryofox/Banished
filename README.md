@@ -56,9 +56,30 @@ Entities Capable of Collision:
 
 
 
+Process Assignment:
+	To assign a worker to a building click the building and press +
 
-
-
+	The + calls an event in the button to send a message to GController
+	GController then passes the message to BlackBoardManager for the Player Faction
+	Blackboard then links the building with an available unit.
+	
+	The buildings job type gets created in building, and sent to the actor.
+	The building appends the actor to its assigned workers list for upkeep 
+		(useful incase the building gets destroyed).
+	The actor sets his job to what the building stated.
+	
+	When an Actor decides an action to perform, he consults his "mood" and his "job"
+		These dictate the behaviour of the Actor in each scenario.
+	
+	-Collection Jobs require information in regards to items in proximity of the assigned building
+	-
+	
+	
+	
+	
+	
+	
+	
 
 
 	

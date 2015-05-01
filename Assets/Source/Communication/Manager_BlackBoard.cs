@@ -44,8 +44,10 @@ public class Manager_BlackBoard
 		Add_Faction(factionName); //Ensure faction exists
 
 		((BlackBoard)hasht_Boards[factionName]).AddBuilding(building); //Add Actor to Board
-		//Insert our new Unit inside the Collision Field
-		//man_Collision.Initial_Addition(unit);
+
+		//Used to be able to skip some checks
+		building.faction= ((BlackBoard)hasht_Boards[factionName]); 
+		
 	}
 
 
@@ -56,7 +58,7 @@ public class Manager_BlackBoard
 		if(hasht_Boards.ContainsKey(factionName))
 			return;		
 
-		BlackBoard bboard = new BlackBoard(factionName);
+		BlackBoard bboard = new BlackBoard(factionName,this);
 		bboard.man_Collision = man_Collision;
 		hasht_Boards.Add(factionName, bboard);
 		list_Boards.Add(bboard);

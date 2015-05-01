@@ -5,11 +5,13 @@ public class Tree : Building {
 
 	public Tree ()
 	{
-
+		this.name="Tree";
 	}
 	protected override void Setup_Building()
 	{
-		this.collisionBox = new BoundingBox(2,2);		
+		this.collisionBox = new BoundingBox(2,2);	
+		inventory= new Inventory(1,200);  
+		inventory.InsertResourceAmount("wood",50);	
 	}
 
 	protected override void Load_Model()

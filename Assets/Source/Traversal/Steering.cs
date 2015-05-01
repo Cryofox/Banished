@@ -23,7 +23,7 @@ public class Steering {
 	private float halfSpeed;
 	public Steering()
 	{
-		halfSpeed=maxSpeed/2;
+		halfSpeed=maxSpeed;
 		//Here we Set our targetPosition to -1,-1 (An Illegal Move)
 		//targetPosition= new Vector3(-1,-1);
 		acceleration= Vector3.zero;
@@ -196,6 +196,11 @@ public class Steering {
 		Seek(lastWander);
 	}
 
+	//Used to stop the unit from moving.
+	protected void Stop() 
+	{
+		//
+	}
 	
 	protected void Wander_2() 
 	{

@@ -6,7 +6,7 @@ public class BlackBoard {
 	public string id_FactionName;
 	public Manager_Collision man_Collision;
 
-
+	Manager_BlackBoard man_BlackBoard;
 
 
 	//List of Units
@@ -15,11 +15,12 @@ public class BlackBoard {
 	List<Building> buildings;
 
 	// Use this for initialization
-	public BlackBoard (string faction) 
+	public BlackBoard (string faction, Manager_BlackBoard man_BB) 
 	{
 		this.id_FactionName= faction;
 		this.units = new List<Actor>();
 		this.buildings= new List<Building>();
+		this.man_BlackBoard= man_BB;
 	}
 
 	//Adds the Character to the BlackBoard and Spawns the Unit in the Game World
@@ -51,7 +52,14 @@ public class BlackBoard {
 	public void RemoveBuilding(Building building)
 	{
 		//To remove the building we need to Kill it.
-		
+		for(int i=0;i<buildings.Count;i++)
+		{
+			if(buildings[i]==building)
+			{
+				buildings.RemoveAt(i);
+				return;
+			}
+		}		
 	}
 
 
@@ -101,5 +109,21 @@ public class BlackBoard {
 	{
 		building.DeAssignUnit();	
 	}
+
+
+//Internal Calls from Managed Objects
+
+	//This function is called from the Destroyed Building
+	public void DestroyBuilding(Building self)
+	{
+		//Since called internally, assume all recordchecking is done
+
+
+		//Remove the building from Sector
+		man_Collision.Remove_Building(self); //Remove from Sector
+		RemoveBuilding(self); // Remove from this Board
+	}
+
+
 
 }

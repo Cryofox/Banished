@@ -32,7 +32,7 @@ public class Actor : Steering
 
 	GameObject model;
 
-
+	public Inventory inventory;
 
 	//Persistant Information
 	public BoundingBox collisionBox;
@@ -45,6 +45,8 @@ public class Actor : Steering
 		this.collisionBox = new BoundingBox(1,1);		
 		this.position=startPosition;
 		this.lastSector= new Vector3(0,0); //This gets auto Updated anyways :)
+
+		inventory = new Inventory(5,5); //25 Carry
 	}
 
 
@@ -65,12 +67,23 @@ public class Actor : Steering
 		//For now we Assume the Actor is always Wandering/Idle
 		Update_Steering(timeElapsed);
 
-		//Behaviour to do, just wander
-		// if(!Avoid_Bounds())
-		Wander();
-		Avoid_Bounds();
-		//In Order to steer away from each other Set an avoidance radius= 2x bounding box, velocity = Max while inside it
 
+
+		//Ai Brain Logic....
+			//Behaviour to do, just wander
+			// if(!Avoid_Bounds())
+			// Wander();
+			//In Order to steer away from each other Set an avoidance radius= 2x bounding box, velocity = Max while inside it
+
+		//If we don't have a job. Just Wander around;
+		if(job==null)
+			Idle();
+		else 
+			job.Work(this);
+
+
+		Avoid_Bounds();
+		/////////////////////
 
 
 		//Update Sector?
@@ -94,5 +107,69 @@ public class Actor : Steering
 		return true;
 	}
 
+	public void AssignJob(Job job)
+	{	
+		this.job=job; 
+		job.AddEssentials(blackBoard, blackBoard.man_Collision);
+	}
 
+
+
+
+
+//Simplified Order Requests
+	float harvestRate;
+	public void Harvest_From(Building target, float harvestRange, string resourceType)
+	{
+		myState= Actor_State.Harvesting;
+		// Collector Logic
+		// **1. Check if a Collectible object exists within Assigned building Range
+			//**This is done by the Job
+
+		// **2. If an Object does exist, Seek it untill you are within X range of it.
+			//**We now order the Unit to Harvest
+		// 3. Once in X Range start "Harvesting the Tree"
+		// 4. Once inventory is full, drop at nearest storage.
+		// 5. Repeat from Step 1.
+
+
+		//2 Seek it
+		//Check distance
+
+		Arrive(target.position);
+		if(Vector3.Distance(position, target.position) < harvestRange)
+		{	
+			//Wait untill Harvest Time is reached?
+			//Harvest Max available
+			int minAmount = Mathf.Min( inventory.CheckAvailableRoom(resourceType),5);
+			target.inventory.RequestResourceAmount(resourceType,minAmount);
+		
+			//After each pull check if it's inventory is empty. If it is destroy the Tree.
+			//This same logic will be used on herbs and rocks
+			if(target.inventory.Get_Available_Resource()=="None")
+				target.Destroy();
+		}
+		
+	}
+
+	public void Store_Inventory()
+	{
+		myState= Actor_State.Storing;
+		//Store Logic
+		//Find Nearest Non-Full Storage
+
+
+	}
+
+	public void Idle()
+	{
+		myState= Actor_State.Idle;
+		Wander();
+
+	}
+
+
+		//Player States
+	enum Actor_State{Idle, Harvesting, Storing, Panicked, Alerted};
+	Actor_State myState= Actor_State.Idle;
 }

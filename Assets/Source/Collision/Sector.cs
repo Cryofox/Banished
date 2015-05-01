@@ -240,5 +240,17 @@ public class Sector
 		return null;
 	}
 
+	public Building Find_Static_InRange(string name, Vector3 pointA, float distance)
+	{
+		for(int i=0;i<staticEntities.Count;i++)
+		{
+			if(staticEntities[i].name==name)
+			{
+				if(Vector3.Distance(staticEntities[i].position,pointA)<=distance)
+					return staticEntities[i];
+			}
+		}
+		return null;
+	}
 
 }
