@@ -72,10 +72,12 @@ public class Inventory
 			{
 				//Calculate the amount remaining
 				int remaining= maxSlotAmnt-resource_Amount[i];
+
+				int min= Mathf.Min( remaining, currentAmount);
 				//Amount we are pushing onto this slot
-				resource_Amount[i]+=remaining;
+				resource_Amount[i]+=min;
 				//Amount remaining to be pushed
-				currentAmount-= remaining;
+				currentAmount-= min;
 			}
 			else if( resource_Name[i]=="None")
 			{

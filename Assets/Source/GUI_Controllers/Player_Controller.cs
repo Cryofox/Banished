@@ -25,6 +25,8 @@ public class Player_Controller : MonoBehaviour {
 	public Logic_Controller logic_Cont;
 	Building building;
 
+	Drag_Selection dragSelect;
+
 	void Start ()
 	{
 		building= null;
@@ -38,6 +40,7 @@ public class Player_Controller : MonoBehaviour {
 		pnH_RoleManager=GameObject.Find("UI Root/Camera/Panel_Main/Pnl_RoleManager").GetComponent<Panel_Hover>();
 		lbl_DebugState=GameObject.Find("UI Root/Camera/Panel_Main/Lbl_DebugState").GetComponent<UILabel>();
 		
+		dragSelect = new Drag_Selection();
 		//Setup Ctx
 		//ctx_BuildMan = new GController_CtxBuilding(logic_Cont);
 		GController_CtxBuilding.Initialize(logic_Cont.man_BlackBoards);
@@ -49,6 +52,8 @@ public class Player_Controller : MonoBehaviour {
 
 	//Here we check the Player's State and Cycle through the possible 
 	//options the player wishes to do.
+
+	Vector3 oldMouse;
 	void Update()
 	{
 		if(current_state== Player_State.Idle)
@@ -58,25 +63,54 @@ public class Player_Controller : MonoBehaviour {
 				current_state= Player_State.Placing_Building;
 			}
 			//If left clicking in the world in Idle mode
-			if(Input.GetMouseButtonDown(0))
-			{
-				//Only perform task if mouse is not over GUI element
-				//Perform the Nested Check + Check if the panel itself is being hovered
-				if(MouseOnGui())
-					return;
+	        Rect screenRect = new Rect(0,0, Screen.width, Screen.height);
+       		if(screenRect.Contains(Input.mousePosition))
+       		{
+				if(Input.GetMouseButtonDown(0))
+				{
 
-				//Check if something collides with the placement before placing
-				//Check if building can be placed, and if so place it. 
-				//Otherwise we don't
-				Building selectedBuild=logic_Cont.man_Collisions.Collision_GetBuilding(GetWorldPosition());
-				GController_CtxBuilding.Update_GTXInfo(selectedBuild);
+					//Only perform task if mouse is not over GUI element
+					//Perform the Nested Check + Check if the panel itself is being hovered
+					if(MouseOnGui())
+						return;
 
-				Actor selectedUnit=logic_Cont.man_Collisions.Collision_GetUnit(GetWorldPosition());
-				GController_CtxUnit.Update_GTXInfo(selectedUnit);					
+					oldMouse= Input.mousePosition;
+					//Not on Gui Therefore Start Drag Selection
+					dragSelect.Start_Draw(oldMouse);
+
+
+					//Check if something collides with the placement before placing
+					//Check if building can be placed, and if so place it. 
+					//Otherwise we don't
+
+					//The Code below is only for single click
+					
+				}
+				//If the mouse "CLICKED" position should be same
+				else if(Input.GetMouseButtonUp(0))
+				{
+					dragSelect.End_Draw();
+					if(Input.mousePosition== oldMouse)
+					{
+						Building selectedBuild=logic_Cont.man_Collisions.Collision_GetBuilding(GetWorldPosition());
+						GController_CtxBuilding.Update_GTXInfo(selectedBuild);
+
+						Actor selectedUnit=logic_Cont.man_Collisions.Collision_GetUnit(GetWorldPosition());
+						GController_CtxUnit.Update_GTXInfo(selectedUnit);	
+					}			
+				}
+				// else if(Input.GetMouseButton(0))
+				// {
+				dragSelect.Update_Draw(Input.mousePosition);				
+				dragSelect.Draw();
+				// }
 
 
 			}
 		}
+
+
+
 		//We are Placing a Building
 		else if(current_state==Player_State.Placing_Building)
 		{
@@ -188,6 +222,9 @@ public class Player_Controller : MonoBehaviour {
 		MoveView();
 		//Regardless State we move the camera
 	}
+
+
+
 	void MoveView()
 	{
 		int up=0;

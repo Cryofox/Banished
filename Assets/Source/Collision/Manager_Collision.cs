@@ -223,30 +223,37 @@ public class Manager_Collision
 		
 		if(tree!=null)
 			return tree;
+
 		if(newSectorX < sectorX_origin && newSectorY < sectorY_origin)
 		{
 			//bottom Left corner is hit aswell meaning minimum 3 checks
 
 			//Check Left
+			tree = sectors[sectorX_origin-1][sectorY_origin].Find_Static_InRange("Tree",position,distance);
 			if(tree!=null)
-			
 				return tree;
+
 			//Check Bottom
+			tree = sectors[sectorX_origin][sectorY_origin-1].Find_Static_InRange("Tree",position,distance);				
 			if(tree!=null)
 				return tree;
+
 			//Check Bottom Left
+			tree = sectors[sectorX_origin-1][sectorY_origin-1].Find_Static_InRange("Tree",position,distance);	
 			if(tree!=null)
 				return tree;
 		}
 		else if(newSectorX < sectorX_origin)
 		{
 			//Only check Left
+			tree = sectors[sectorX_origin-1][sectorY_origin].Find_Static_InRange("Tree",position,distance);
 			if(tree!=null)
 				return tree;
 		}
 		else if(newSectorY < sectorY_origin)
 		{
-			//Only check Bottom
+			//Check Bottom
+			tree = sectors[sectorX_origin][sectorY_origin-1].Find_Static_InRange("Tree",position,distance);				
 			if(tree!=null)
 				return tree;
 		}
@@ -260,29 +267,32 @@ public class Manager_Collision
 			//Top Right corner is hit aswell meaning minimum 3 checks
 
 			//Check Right
+			tree = sectors[sectorX_origin+1][sectorY_origin].Find_Static_InRange("Tree",position,distance);
 			if(tree!=null)
 				return tree;
 			//Check Top
+			tree = sectors[sectorX_origin][sectorY_origin+1].Find_Static_InRange("Tree",position,distance);
 			if(tree!=null)
 				return tree;
 			//Check Top Right
+			tree = sectors[sectorX_origin+1][sectorY_origin+1].Find_Static_InRange("Tree",position,distance);
 			if(tree!=null)
 				return tree;
 		}
 		else if(newSectorX > sectorX_origin)
 		{
 			//Only check Right
+			tree = sectors[sectorX_origin+1][sectorY_origin].Find_Static_InRange("Tree",position,distance);
 			if(tree!=null)
 				return tree;
 		}
 		else if(newSectorY > sectorY_origin)
 		{
 			//Only check Top
+			tree = sectors[sectorX_origin][sectorY_origin+1].Find_Static_InRange("Tree",position,distance);
 			if(tree!=null)
 				return tree;
 		}
-
-
 
 		return null;
 	}
