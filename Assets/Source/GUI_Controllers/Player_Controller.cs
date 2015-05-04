@@ -63,9 +63,9 @@ public class Player_Controller : MonoBehaviour {
 				current_state= Player_State.Placing_Building;
 			}
 			//If left clicking in the world in Idle mode
-	        Rect screenRect = new Rect(0,0, Screen.width, Screen.height);
-       		if(screenRect.Contains(Input.mousePosition))
-       		{
+	        // Rect screenRect = new Rect(0,0, Screen.width, Screen.height);
+       		// if(screenRect.Contains(Input.mousePosition))
+       		// {
 				if(Input.GetMouseButtonDown(0))
 				{
 
@@ -76,7 +76,7 @@ public class Player_Controller : MonoBehaviour {
 
 					oldMouse= Input.mousePosition;
 					//Not on Gui Therefore Start Drag Selection
-					dragSelect.Start_Draw(oldMouse);
+					dragSelect.Start_Draw(GetWorldPosition(oldMouse));
 
 
 					//Check if something collides with the placement before placing
@@ -92,24 +92,22 @@ public class Player_Controller : MonoBehaviour {
 					dragSelect.End_Draw();
 					if(Input.mousePosition== oldMouse)
 					{
-						Building selectedBuild=logic_Cont.man_Collisions.Collision_GetBuilding(GetWorldPosition());
+						Building selectedBuild=logic_Cont.man_Collisions.Collision_GetBuilding(GetWorldPosition(Input.mousePosition));
 						GController_CtxBuilding.Update_GTXInfo(selectedBuild);
 
-						Actor selectedUnit=logic_Cont.man_Collisions.Collision_GetUnit(GetWorldPosition());
+						Actor selectedUnit=logic_Cont.man_Collisions.Collision_GetUnit(GetWorldPosition(Input.mousePosition));
 						GController_CtxUnit.Update_GTXInfo(selectedUnit);	
 					}			
 				}
 				// else if(Input.GetMouseButton(0))
 				// {
-				dragSelect.Update_Draw(Input.mousePosition);				
+				dragSelect.Update_Draw(GetWorldPosition(Input.mousePosition));				
 				dragSelect.Draw();
 				// }
 
 
-			}
+			// }
 		}
-
-
 
 		//We are Placing a Building
 		else if(current_state==Player_State.Placing_Building)
@@ -192,7 +190,8 @@ public class Player_Controller : MonoBehaviour {
 			//When a building is highlighted
 			if(building!=null)
 			{	
-				building.Set_Position(GetWorldPosition());	
+
+				building.Set_Position(SnapVector(GetWorldPosition(Input.mousePosition)));	
 				//0=Left, 1 =Right, 2 = Middle
 				if(Input.GetMouseButtonDown(0))
 				{
@@ -248,26 +247,32 @@ public class Player_Controller : MonoBehaviour {
 
 	Vector3 lastPosition;
 	//Also useful for checking on characters
-	Vector3 GetWorldPosition()
+	Vector3 GetWorldPosition(Vector3 input)
 	{
         //Selecting Objects
-        Rect screenRect = new Rect(0,0, Screen.width, Screen.height);
-        if(screenRect.Contains(Input.mousePosition))
-        {
-	 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // Rect screenRect = new Rect(0,0, Screen.width, Screen.height);
+        // if(screenRect.Contains(input))
+        // {
+ 		Ray ray = Camera.main.ScreenPointToRay(input);
 
-			//Get Distance from Origin to Ground based on direction
-   
-			float distance = -(ray.origin.y/ ray.direction.y);
+		//Get Distance from Origin to Ground based on direction
 
-	        Debug.DrawRay(ray.origin, ray.direction * distance, Color.yellow);
-    		lastPosition=  (ray.origin+ (ray.direction*distance) );
-	    }
+		float distance = -(ray.origin.y/ ray.direction.y);
+
+        Debug.DrawRay(ray.origin, ray.direction * distance, Color.yellow);
+		lastPosition=  (ray.origin+ (ray.direction*distance) );
+	    // }
 
 	    return lastPosition;
 	}
 
-
+	Vector3 SnapVector(Vector3 pos)
+	{
+		pos.x= (int)pos.x;
+		pos.y= (int)pos.y;
+		pos.z= (int)pos.z;
+		return pos;
+	}
 
 
 	bool MouseOnGui()
