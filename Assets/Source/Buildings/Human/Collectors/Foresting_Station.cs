@@ -49,7 +49,7 @@ public class Foresting_Station : Building
 
 	public override Job LoadJob()
 	{
-		return new Job(this);
+		return new Gather("Tree",this);
 	}
 
 }

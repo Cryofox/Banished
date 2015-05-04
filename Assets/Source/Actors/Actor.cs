@@ -149,7 +149,6 @@ public class Actor : Steering
 
 		//2 Seek it
 		//Check distance
-
 		//Target Position is harvest Range from
 		Vector3 goal = target.position + new Vector3(harvestRange/5,0,0);
 
@@ -170,6 +169,46 @@ public class Actor : Steering
 				target.Destroy();
 		}
 	}
+
+	//Go to Building
+	public void Convert_At(Building target, List<Resource_Amount> inputResources, List<Resource_Amount> outputResources)
+	{
+		myState= Actor_State.Converting;
+		// Collector Logic
+		// **1. Check if a Collectible object exists within Assigned building Range
+			//**This is done by the Job
+
+		// **2. If an Object does exist, Seek it untill you are within X range of it.
+			//**We now order the Unit to Harvest
+		// 3. Once in X Range start "Harvesting the Tree"
+		// 4. Once inventory is full, drop at nearest storage.
+		// 5. Repeat from Step 1.
+
+
+		//2 Seek it
+		//Check distance
+		//Target Position is harvest Range from
+
+
+		Arrive(target.position);
+
+		//If we're at target
+		if(Vector3.Distance(position, target.position) < 1)
+		{	
+
+			//Remove the amount of input resources needed for one item
+			for(int i=0;i<inputResources.Count;i++)
+			{
+				inventory.RequestResourceAmount(inputResources[i].resourceName,inputResources[i].amount);
+			}
+
+			for(int i=0;i<outputResources.Count;i++)
+			{
+				inventory.InsertResourceAmount(outputResources[i].resourceName,outputResources[i].amount);
+			}
+
+		}
+	}	
 
 	public void Store_Inventory(Building target)
 	{
@@ -195,6 +234,24 @@ public class Actor : Steering
 		}
 	}
 
+	//A storage is passed here, simply pull the resource needed
+	//Here we only pull the amount needed for one item
+	public void Grab_Inventory(Building target, string resourceName, int amount)
+	{
+		myState= Actor_State.Retrieving;
+		//Store Logic
+		//Find Nearest Non-Full Storage
+		Arrive(target.position);
+
+		if(Vector3.Distance(position, target.position) < 1)
+		{	
+			EventLog.Log_Message("TargetName:"+target.name);
+			int largestAmount = Mathf.Min( amount,target.inventory.CheckResourceAmount(resourceName));
+			int amountPulled = target.inventory.RequestResourceAmount(resourceName,largestAmount);
+			inventory.InsertResourceAmount(resourceName,amountPulled);
+		}	
+	}
+
 	public void Idle()
 	{
 		myState= Actor_State.Idle;
@@ -203,7 +260,7 @@ public class Actor : Steering
 
 
 		//Player States
-	enum Actor_State{Idle, Harvesting, Storing, Panicked, Alerted};
+	enum Actor_State{Idle, Harvesting, Storing, Converting, Retrieving, Panicked, Alerted};
 	Actor_State myState= Actor_State.Idle;
 
 

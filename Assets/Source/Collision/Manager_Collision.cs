@@ -207,7 +207,8 @@ public class Manager_Collision
 
 	//Problem: Will always return the same tree for X actors requesting from
 	//same building.
-	public Building FindinRange_Tree(Vector3 position, float distance)
+//Refactor this for any Building based on name
+	public Building FindinRange_Building(Vector3 position, float distance, string bName)
 	{
 		//Step 1 calculate all sectors that Intersect
 
@@ -219,7 +220,7 @@ public class Manager_Collision
 		int newSectorY = (int)(position.x-distance)/ segmentLength;
 
 		//Check Center
-		Building tree = sectors[sectorX_origin][sectorY_origin].Find_Static_InRange("Tree",position,distance);
+		Building tree = sectors[sectorX_origin][sectorY_origin].Find_Static_InRange(bName,position,distance);
 		
 		if(tree!=null)
 			return tree;
@@ -229,31 +230,31 @@ public class Manager_Collision
 			//bottom Left corner is hit aswell meaning minimum 3 checks
 
 			//Check Left
-			tree = sectors[sectorX_origin-1][sectorY_origin].Find_Static_InRange("Tree",position,distance);
+			tree = sectors[sectorX_origin-1][sectorY_origin].Find_Static_InRange(bName,position,distance);
 			if(tree!=null)
 				return tree;
 
 			//Check Bottom
-			tree = sectors[sectorX_origin][sectorY_origin-1].Find_Static_InRange("Tree",position,distance);				
+			tree = sectors[sectorX_origin][sectorY_origin-1].Find_Static_InRange(bName,position,distance);				
 			if(tree!=null)
 				return tree;
 
 			//Check Bottom Left
-			tree = sectors[sectorX_origin-1][sectorY_origin-1].Find_Static_InRange("Tree",position,distance);	
+			tree = sectors[sectorX_origin-1][sectorY_origin-1].Find_Static_InRange(bName,position,distance);	
 			if(tree!=null)
 				return tree;
 		}
 		else if(newSectorX < sectorX_origin)
 		{
 			//Only check Left
-			tree = sectors[sectorX_origin-1][sectorY_origin].Find_Static_InRange("Tree",position,distance);
+			tree = sectors[sectorX_origin-1][sectorY_origin].Find_Static_InRange(bName,position,distance);
 			if(tree!=null)
 				return tree;
 		}
 		else if(newSectorY < sectorY_origin)
 		{
 			//Check Bottom
-			tree = sectors[sectorX_origin][sectorY_origin-1].Find_Static_InRange("Tree",position,distance);				
+			tree = sectors[sectorX_origin][sectorY_origin-1].Find_Static_InRange(bName,position,distance);				
 			if(tree!=null)
 				return tree;
 		}
@@ -267,29 +268,29 @@ public class Manager_Collision
 			//Top Right corner is hit aswell meaning minimum 3 checks
 
 			//Check Right
-			tree = sectors[sectorX_origin+1][sectorY_origin].Find_Static_InRange("Tree",position,distance);
+			tree = sectors[sectorX_origin+1][sectorY_origin].Find_Static_InRange(bName,position,distance);
 			if(tree!=null)
 				return tree;
 			//Check Top
-			tree = sectors[sectorX_origin][sectorY_origin+1].Find_Static_InRange("Tree",position,distance);
+			tree = sectors[sectorX_origin][sectorY_origin+1].Find_Static_InRange(bName,position,distance);
 			if(tree!=null)
 				return tree;
 			//Check Top Right
-			tree = sectors[sectorX_origin+1][sectorY_origin+1].Find_Static_InRange("Tree",position,distance);
+			tree = sectors[sectorX_origin+1][sectorY_origin+1].Find_Static_InRange(bName,position,distance);
 			if(tree!=null)
 				return tree;
 		}
 		else if(newSectorX > sectorX_origin)
 		{
 			//Only check Right
-			tree = sectors[sectorX_origin+1][sectorY_origin].Find_Static_InRange("Tree",position,distance);
+			tree = sectors[sectorX_origin+1][sectorY_origin].Find_Static_InRange(bName,position,distance);
 			if(tree!=null)
 				return tree;
 		}
 		else if(newSectorY > sectorY_origin)
 		{
 			//Only check Top
-			tree = sectors[sectorX_origin][sectorY_origin+1].Find_Static_InRange("Tree",position,distance);
+			tree = sectors[sectorX_origin][sectorY_origin+1].Find_Static_InRange(bName,position,distance);
 			if(tree!=null)
 				return tree;
 		}

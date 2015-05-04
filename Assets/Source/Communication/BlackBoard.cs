@@ -125,7 +125,7 @@ public class BlackBoard {
 	}
 
 
-
+	//This is finding the nearest storage with room to dump stuff in
 	public Building FindNearestStorage(Actor unit)
 	{
 		//Cycle through all Buildings owned by faction
@@ -164,5 +164,45 @@ public class BlackBoard {
 		return storage;
 	}
 
+	//This scans for the nearest storage that has a resource in stock
+	public Building FindNearestStorage_With(Actor unit, string resource)
+	{
+		//Cycle through all Buildings owned by faction
+		Building storage=null;
+		float distance=0;
+		string firstResource = unit.inventory.Get_Available_Resource();
+		for(int i=0;i<buildings.Count;i++)
+		{
+			if(buildings[i].name=="Storage")
+			{
+				//If we don't have any valid storage then the first one we get is good.
+				if(storage==null)
+				{	
+					//If it has room for (A) resource then do eet.
+					if(buildings[i].inventory.ContainsResource(firstResource)==true)
+					{
+						storage=buildings[i];
+						distance= Vector3.Distance(unit.unitPosition, buildings[i].position);
+					}
+				}
+				else 
+				{
+					float temp = Vector3.Distance(unit.unitPosition, buildings[i].position);
+					if(temp<distance)
+					{
+						//If the building has the resource, use it for a possible candidate
+						if(buildings[i].inventory.ContainsResource(firstResource)==true)
+						{
+							storage=buildings[i];
+							distance= Vector3.Distance(unit.unitPosition, buildings[i].position);
+						}
+					}
+				}
+			}
+		}
+
+		//Future (Check Sectors, and slowly branch outward from unit's location)
+		return storage;
+	}
 
 }

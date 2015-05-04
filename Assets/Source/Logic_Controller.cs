@@ -201,6 +201,7 @@ public class Logic_Controller : MonoBehaviour {
 
 		building.Select_Ghost();
 		building.inventory.InsertResourceAmount("plank",200);
+		building.inventory.InsertResourceAmount("wood",200);		
 		while(!isPlaced)
 		{
 			//Randomize the X/Z
